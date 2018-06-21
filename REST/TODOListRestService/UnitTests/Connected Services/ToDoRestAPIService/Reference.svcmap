@@ -23,10 +23,11 @@
   </MetadataSources>
   <Metadata>
     <MetadataFile FileName="ToDoListRestAPIService.xsd" MetadataType="Schema" ID="e5d639d2-ce7a-4682-ab7d-a579a3b76022" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ToDoListRestAPIService3.xsd" MetadataType="Schema" ID="d59ede04-067e-4979-87bd-d19c42678e12" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ToDoListRestAPIService2.xsd" MetadataType="Schema" ID="339e4810-fec3-4118-96c7-698426a19d78" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ToDoListRestAPIService1.xsd" MetadataType="Schema" ID="c1ad3a98-9b70-4d14-abe3-a6e66542f5e9" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd1" />
     <MetadataFile FileName="ToDoListRestAPIService.disco" MetadataType="Disco" ID="fd19e0cf-ae87-475d-ba85-57ad60a05b16" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?disco" />
     <MetadataFile FileName="ToDoListRestAPIService.wsdl" MetadataType="Wsdl" ID="a737eae0-0ede-4fa7-8608-51eaeac3b4dc" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?wsdl" />
-    <MetadataFile FileName="ToDoListRestAPIService1.xsd" MetadataType="Schema" ID="c1ad3a98-9b70-4d14-abe3-a6e66542f5e9" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd1" />
-    <MetadataFile FileName="ToDoListRestAPIService2.xsd" MetadataType="Schema" ID="339e4810-fec3-4118-96c7-698426a19d78" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

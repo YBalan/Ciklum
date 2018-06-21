@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel" />
+      <xsd:import schemaLocation="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IToDoListRestAPIService_GetData_InputMessage">
@@ -28,6 +29,15 @@
   <wsdl:message name="IToDoListRestAPIService_GetList_RESTAPIExceptionDataFault_FaultMessage">
     <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel" name="detail" element="q1:RESTAPIExceptionData" />
   </wsdl:message>
+  <wsdl:message name="IToDoListRestAPIService_AddNewList_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewList" />
+  </wsdl:message>
+  <wsdl:message name="IToDoListRestAPIService_AddNewList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNewListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IToDoListRestAPIService_AddNewList_RESTAPIExceptionDataFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel" name="detail" element="q2:RESTAPIExceptionData" />
+  </wsdl:message>
   <wsdl:portType name="IToDoListRestAPIService">
     <wsdl:operation name="GetData">
       <wsdl:input wsaw:Action="http://tempuri.org/IToDoListRestAPIService/GetData" message="tns:IToDoListRestAPIService_GetData_InputMessage" />
@@ -41,6 +51,11 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IToDoListRestAPIService/GetList" message="tns:IToDoListRestAPIService_GetList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IToDoListRestAPIService/GetListResponse" message="tns:IToDoListRestAPIService_GetList_OutputMessage" />
       <wsdl:fault wsaw:Action="http://tempuri.org/IToDoListRestAPIService/GetListRESTAPIExceptionDataFault" name="RESTAPIExceptionDataFault" message="tns:IToDoListRestAPIService_GetList_RESTAPIExceptionDataFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNewList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IToDoListRestAPIService/AddNewList" message="tns:IToDoListRestAPIService_AddNewList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IToDoListRestAPIService/AddNewListResponse" message="tns:IToDoListRestAPIService_AddNewList_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IToDoListRestAPIService/AddNewListRESTAPIExceptionDataFault" name="RESTAPIExceptionDataFault" message="tns:IToDoListRestAPIService_AddNewList_RESTAPIExceptionDataFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:service name="ToDoListRestAPIService" />

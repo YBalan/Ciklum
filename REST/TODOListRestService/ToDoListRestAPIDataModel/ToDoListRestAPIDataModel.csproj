@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\Base.cs" />
+    <Compile Include="DataModel\CompletedTask.cs" />
     <Compile Include="DataModel\Exception.cs" />
+    <Compile Include="DataModel\JsonParseHelper.cs" />
     <Compile Include="DataModel\Task.cs" />
     <Compile Include="DataModel\TodoList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

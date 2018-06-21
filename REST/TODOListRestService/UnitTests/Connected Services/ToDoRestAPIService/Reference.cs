@@ -9,179 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace UnitTests.ToDoRestAPIService {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TodoList", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
-    [System.SerializableAttribute()]
-    public partial class TodoList : UnitTests.ToDoRestAPIService.Base {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private UnitTests.ToDoRestAPIService.Task[] TasksField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public UnitTests.ToDoRestAPIService.Task[] Tasks {
-            get {
-                return this.TasksField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TasksField, value) != true)) {
-                    this.TasksField = value;
-                    this.RaisePropertyChanged("Tasks");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Base", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UnitTests.ToDoRestAPIService.Task))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UnitTests.ToDoRestAPIService.TodoList))]
-    public partial class Base : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdField, value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Task", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
-    [System.SerializableAttribute()]
-    public partial class Task : UnitTests.ToDoRestAPIService.Base {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool CompletedField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Completed {
-            get {
-                return this.CompletedField;
-            }
-            set {
-                if ((this.CompletedField.Equals(value) != true)) {
-                    this.CompletedField = value;
-                    this.RaisePropertyChanged("Completed");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RESTAPIExceptionData", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
-    [System.SerializableAttribute()]
-    public partial class RESTAPIExceptionData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RESTMessageField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RESTMessage {
-            get {
-                return this.RESTMessageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RESTMessageField, value) != true)) {
-                    this.RESTMessageField = value;
-                    this.RaisePropertyChanged("RESTMessage");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ToDoRestAPIService.IToDoListRestAPIService")]
@@ -194,17 +22,24 @@ namespace UnitTests.ToDoRestAPIService {
         System.Threading.Tasks.Task<string> GetDataAsync(string value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/GetLists", ReplyAction="http://tempuri.org/IToDoListRestAPIService/GetListsResponse")]
-        UnitTests.ToDoRestAPIService.TodoList[] GetLists();
+        WcfTodoListService.DataModel.TodoList[] GetLists();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/GetLists", ReplyAction="http://tempuri.org/IToDoListRestAPIService/GetListsResponse")]
-        System.Threading.Tasks.Task<UnitTests.ToDoRestAPIService.TodoList[]> GetListsAsync();
+        System.Threading.Tasks.Task<WcfTodoListService.DataModel.TodoList[]> GetListsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/GetList", ReplyAction="http://tempuri.org/IToDoListRestAPIService/GetListResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(UnitTests.ToDoRestAPIService.RESTAPIExceptionData), Action="http://tempuri.org/IToDoListRestAPIService/GetListRESTAPIExceptionDataFault", Name="RESTAPIExceptionData", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
-        UnitTests.ToDoRestAPIService.TodoList GetList(string id);
+        [System.ServiceModel.FaultContractAttribute(typeof(WcfTodoListService.DataModel.RESTAPIExceptionData), Action="http://tempuri.org/IToDoListRestAPIService/GetListRESTAPIExceptionDataFault", Name="RESTAPIExceptionData", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
+        WcfTodoListService.DataModel.TodoList GetList(string id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/GetList", ReplyAction="http://tempuri.org/IToDoListRestAPIService/GetListResponse")]
-        System.Threading.Tasks.Task<UnitTests.ToDoRestAPIService.TodoList> GetListAsync(string id);
+        System.Threading.Tasks.Task<WcfTodoListService.DataModel.TodoList> GetListAsync(string id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/AddNewList", ReplyAction="http://tempuri.org/IToDoListRestAPIService/AddNewListResponse")]
+        [System.ServiceModel.FaultContractAttribute(typeof(WcfTodoListService.DataModel.RESTAPIExceptionData), Action="http://tempuri.org/IToDoListRestAPIService/AddNewListRESTAPIExceptionDataFault", Name="RESTAPIExceptionData", Namespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel")]
+        string AddNewList(System.IO.Stream data);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IToDoListRestAPIService/AddNewList", ReplyAction="http://tempuri.org/IToDoListRestAPIService/AddNewListResponse")]
+        System.Threading.Tasks.Task<string> AddNewListAsync(System.IO.Stream data);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -242,20 +77,28 @@ namespace UnitTests.ToDoRestAPIService {
             return base.Channel.GetDataAsync(value);
         }
         
-        public UnitTests.ToDoRestAPIService.TodoList[] GetLists() {
+        public WcfTodoListService.DataModel.TodoList[] GetLists() {
             return base.Channel.GetLists();
         }
         
-        public System.Threading.Tasks.Task<UnitTests.ToDoRestAPIService.TodoList[]> GetListsAsync() {
+        public System.Threading.Tasks.Task<WcfTodoListService.DataModel.TodoList[]> GetListsAsync() {
             return base.Channel.GetListsAsync();
         }
         
-        public UnitTests.ToDoRestAPIService.TodoList GetList(string id) {
+        public WcfTodoListService.DataModel.TodoList GetList(string id) {
             return base.Channel.GetList(id);
         }
         
-        public System.Threading.Tasks.Task<UnitTests.ToDoRestAPIService.TodoList> GetListAsync(string id) {
+        public System.Threading.Tasks.Task<WcfTodoListService.DataModel.TodoList> GetListAsync(string id) {
             return base.Channel.GetListAsync(id);
+        }
+        
+        public string AddNewList(System.IO.Stream data) {
+            return base.Channel.AddNewList(data);
+        }
+        
+        public System.Threading.Tasks.Task<string> AddNewListAsync(System.IO.Stream data) {
+            return base.Channel.AddNewListAsync(data);
         }
     }
 }

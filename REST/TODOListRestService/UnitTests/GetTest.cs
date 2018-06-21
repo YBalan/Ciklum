@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ToDoListRestAPIDataModel.DataModel;
 using UnitTests.ToDoRestAPIService;
+using WcfTodoListService.DataModel;
 
 namespace UnitTests
 {
@@ -12,12 +14,12 @@ namespace UnitTests
     {
         private const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
         [TestMethod]
-        public void GetLists()
+        public void GetListsTest()
         {
             try
             {
-                var json = HttpClientTestHelper.Send(REST_SERVICE_START_URL + "lists", HttpMethod.Get);
-                var list = HttpClientTestHelper.ParseJson<List<TodoList>>(json);
+                var json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "lists");
+                var list = json.DeserializeJson<List<TodoList>>();
                 Assert.IsNotNull(list);
             }
             catch (FaultException ex)
@@ -28,13 +30,13 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void GetListPositive()
+        public void GetListPositiveTest()
         {
             try
             {
                 var id = "validID"; // TODO
-                var json = HttpClientTestHelper.Send(REST_SERVICE_START_URL + "list/" + id, HttpMethod.Get);
-                var list = HttpClientTestHelper.ParseJson<TodoList>(json);
+                var json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/" + id);
+                var list = json.DeserializeJson<TodoList>();
                 Assert.IsNotNull(list);
 
             }
@@ -46,12 +48,12 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void GetListNegative()
+        public void GetListNegativeTest()
         {
             try
             {
-                var json = HttpClientTestHelper.Send(REST_SERVICE_START_URL + "list/flagkjflgj", HttpMethod.Get);
-                var list = HttpClientTestHelper.ParseJson<TodoList>(json);
+                var json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/flagkjflgj");
+                var list = json.DeserializeJson<TodoList>();
                 Assert.IsNotNull(list);
 
             }

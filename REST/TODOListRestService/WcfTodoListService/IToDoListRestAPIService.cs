@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -14,7 +15,7 @@ namespace WcfTodoListService
     public interface IToDoListRestAPIService
     {
         [OperationContract]
-        [WebGet(UriTemplate="/getdata/{value}")]//(UriTemplate = "/getdata", RequestFormat = WebMessageFormat.Xml, ResponseFormat = WebMessageFormat.Xml, BodyStyle = WebMessageBodyStyle.Bare)]
+        [WebGet(UriTemplate="/getdata/{value}")]
         string GetData(string value);
 
         #region GET Methods
@@ -31,6 +32,12 @@ namespace WcfTodoListService
         #endregion
 
         #region POST Methods
+        [OperationContract]
+        [FaultContract(typeof(RESTAPIExceptionData))]
+        [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        string AddNewList(Stream data);
+      
+      
         #endregion
     }   
 }
