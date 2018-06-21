@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
-using WcfTodoListService.DataModel;
+using ToDoListRestAPIDataModel.DataModel;
 
 namespace WcfTodoListService
 {
@@ -35,9 +35,19 @@ namespace WcfTodoListService
         [OperationContract]
         [FaultContract(typeof(RESTAPIExceptionData))]
         [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        string AddNewList(Stream data);
-      
-      
+        AddObjectResult AddNewList(Stream data);
+
+        [OperationContract]
+        [FaultContract(typeof(RESTAPIExceptionData))]
+        [WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        AddObjectResult AddNewTask(string listId, Stream data);
+
+        [OperationContract]
+        [FaultContract(typeof(RESTAPIExceptionData))]
+        [WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        AddObjectResult TaskComplete(string listId, string taskId, Stream data);
+
+
         #endregion
     }   
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace WcfTodoListService.DataModel
+namespace ToDoListRestAPIDataModel.DataModel
 {
     [DataContract]
     public class Base

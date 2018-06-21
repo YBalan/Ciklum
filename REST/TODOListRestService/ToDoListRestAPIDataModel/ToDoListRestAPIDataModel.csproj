@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModel\AddObjectResult.cs" />
     <Compile Include="DataModel\Base.cs" />
     <Compile Include="DataModel\CompletedTask.cs" />
     <Compile Include="DataModel\Exception.cs" />

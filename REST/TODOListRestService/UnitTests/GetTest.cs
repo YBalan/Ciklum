@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ToDoListRestAPIDataModel.DataModel;
-using UnitTests.ToDoRestAPIService;
-using WcfTodoListService.DataModel;
 
 namespace UnitTests
 {

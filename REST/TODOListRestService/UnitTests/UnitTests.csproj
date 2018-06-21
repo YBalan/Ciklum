@@ -52,11 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\ToDoRestAPIService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="GetTest.cs" />
     <Compile Include="HttpClientTestHelper.cs" />
     <Compile Include="PostTest.cs" />
@@ -64,42 +59,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService.wsdl" />
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\WcfTodoListService.DataModel.TodoList.datasource" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\ToDoRestAPIService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ToDoRestAPIService\ToDoListRestAPIService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ToDoRestAPIService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ToDoRestAPIService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ToDoRestAPIService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ToDoListRestAPIDataModel\ToDoListRestAPIDataModel.csproj">

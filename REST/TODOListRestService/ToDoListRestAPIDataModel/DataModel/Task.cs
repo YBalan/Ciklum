@@ -4,10 +4,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace WcfTodoListService.DataModel
+namespace ToDoListRestAPIDataModel.DataModel
 {
     [DataContract]
-    public class Task : Base
+    public sealed class Task : Base
     {
         [DataMember]
         public bool Completed { get; set; }
