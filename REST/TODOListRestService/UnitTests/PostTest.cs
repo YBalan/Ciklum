@@ -10,16 +10,16 @@ using ToDoListRestAPIDataModel.DataModel;
 namespace UnitTests
 {
     [TestClass]
-    public class PostTest
+    public sealed class PostTest
     {
         private const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
-        
+
         [TestMethod]
         public void AddNewListTest()
         {
             try
             {
-                var jsonNewList = 
+                var jsonNewList =
 @"{{
   ""id"": ""d290f1ee-6c54-4b01-90e6-d701748f0851"",
   ""name"": ""Home"",
@@ -38,7 +38,7 @@ namespace UnitTests
 
                 Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
                 Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
-                
+
 
                 //json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/d290f1ee-6c54-4b01-90e6-d701748f0851");
 
@@ -47,7 +47,58 @@ namespace UnitTests
 
                 //Assert.Equals("d290f1ee-6c54-4b01-90e6-d701748f0851", list.Id);
             }
-            catch (Exception ex)
+            catch (FaultException ex)
+            {
+                Assert.Fail(ex.Message);
+                throw;
+            }
+        }
+
+
+        [TestMethod]
+        public void AddNewTaskTest()
+        {
+            try
+            {
+                AddNewListTest();
+                var jsonNewTask =
+ @"{{
+  ""id"": ""0e2ac84f-f723-4f24-878b-44e63e7ae580_"",
+  ""name"": ""mow the yard"",
+  ""completed"": true
+}";
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "/list/d290f1ee-6c54-4b01-90e6-d701748f0851/tasks", jsonNewTask);
+                var result = json.DeserializeJson<AddObjectResult>();
+                Assert.IsNotNull(result);
+
+                Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
+                Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
+            }
+            catch (FaultException ex)
+            {
+                Assert.Fail(ex.Message);
+                throw;
+            }
+        }
+
+        [TestMethod]
+        public void CompleteTaskTest()
+        {
+            try
+            {
+                AddNewListTest();
+                AddNewTaskTest();
+                var jsonCompleteTask =
+ @"{{
+  ""completed"": true
+}";
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "/list/d290f1ee-6c54-4b01-90e6-d701748f0851/task/0e2ac84f-f723-4f24-878b-44e63e7ae580/complete", jsonCompleteTask);
+                var result = json.DeserializeJson<CompletedTask>();
+                Assert.IsNotNull(result);
+
+                Assert.IsFalse(result.Completed);
+            }
+            catch (FaultException ex)
             {
                 Assert.Fail(ex.Message);
                 throw;
