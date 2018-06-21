@@ -10,7 +10,7 @@ namespace ToDoListRestAPIDataModel.DataModel
     public sealed class RESTAPIExceptionData
     {
         [DataMember]
-        public string RESTMessage { get; set; }        
+        public string RESTMessage { get; set; }
 
         public RESTAPIExceptionData(string message)
         {

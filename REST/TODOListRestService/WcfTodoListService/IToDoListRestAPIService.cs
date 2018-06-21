@@ -14,12 +14,7 @@ namespace WcfTodoListService
     [ServiceContract]
     public interface IToDoListRestAPIService
     {
-        [OperationContract]
-        [WebGet(UriTemplate="/getdata/{value}")]
-        string GetData(string value);
-
         #region GET Methods
-
         [OperationContract]
         [WebGet(UriTemplate = "/lists", ResponseFormat = WebMessageFormat.Json)]
         IEnumerable<TodoList> GetLists();
@@ -28,7 +23,6 @@ namespace WcfTodoListService
         [FaultContract(typeof(RESTAPIExceptionData))]
         [WebGet(UriTemplate = "/list/{id}", ResponseFormat = WebMessageFormat.Json)]
         TodoList GetList(string id);
-
         #endregion
 
         #region POST Methods
@@ -38,16 +32,14 @@ namespace WcfTodoListService
         AddObjectResult AddNewList(Stream data);
 
         [OperationContract]
-        [FaultContract(typeof(RESTAPIExceptionData))]
-        [WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        //[FaultContract(typeof(RESTAPIExceptionData))]
+        [WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         AddObjectResult AddNewTask(string listId, Stream data);
 
-        [OperationContract]
-        [FaultContract(typeof(RESTAPIExceptionData))]
-        [WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        AddObjectResult TaskComplete(string listId, string taskId, Stream data);
-
-
+        //[OperationContract]
+        //[FaultContract(typeof(RESTAPIExceptionData))]
+        //[WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        //AddObjectResult TaskComplete(string listId, string taskId, Stream data);
         #endregion
     }   
 }

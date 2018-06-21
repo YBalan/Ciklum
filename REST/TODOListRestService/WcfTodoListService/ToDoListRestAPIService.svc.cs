@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace WcfTodoListService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
-        private List<TodoList> TodoLists = new List<TodoList>();
+        private static BlockingCollection<TodoList> TodoLists = new BlockingCollection<TodoList>();
         public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);
@@ -25,7 +26,7 @@ namespace WcfTodoListService
         #region GET Methods
         public IEnumerable<TodoList> GetLists()
         {
-            return TodoLists;
+            return TodoLists.ToArray();
         }
 
         public TodoList GetList(string id)
@@ -52,7 +53,7 @@ namespace WcfTodoListService
                     return AddObjectResult.Exists;
                 }
 
-                TodoLists.Add(list);
+                TodoLists.TryAdd(list);
 
                 return AddObjectResult.Created;
             }
