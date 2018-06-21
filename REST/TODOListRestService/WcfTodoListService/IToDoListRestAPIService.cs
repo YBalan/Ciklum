@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using WcfTodoListService.DataModel;
 
 namespace WcfTodoListService
 {
@@ -12,37 +13,24 @@ namespace WcfTodoListService
     [ServiceContract]
     public interface IToDoListRestAPIService
     {
-
         [OperationContract]
         [WebGet(UriTemplate="/getdata/{value}")]//(UriTemplate = "/getdata", RequestFormat = WebMessageFormat.Xml, ResponseFormat = WebMessageFormat.Xml, BodyStyle = WebMessageBodyStyle.Bare)]
         string GetData(string value);
 
+        #region GET Methods
+
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
+        [WebGet(UriTemplate = "/lists", ResponseFormat = WebMessageFormat.Json)]
+        IEnumerable<TodoList> GetLists();
 
-        // TODO: Add your service operations here
-    }
+        [OperationContract]
+        [FaultContract(typeof(RESTAPIExceptionData))]
+        [WebGet(UriTemplate = "/list/{id}", ResponseFormat = WebMessageFormat.Json)]
+        TodoList GetList(string id);
 
+        #endregion
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
-    [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
-
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
-    }
+        #region POST Methods
+        #endregion
+    }   
 }

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using WcfTodoListService.DataModel;
 
 namespace WcfTodoListService
 {
@@ -12,22 +13,25 @@ namespace WcfTodoListService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class ToDoListRestAPIService : IToDoListRestAPIService
     {
+        private readonly IEnumerable<TodoList> TodoLists = new List<TodoList>();
         public string GetData(string value)
         {
             return string.Format("You entered: {0}", value);
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        #region GET Methods
+        public IEnumerable<TodoList> GetLists()
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            return TodoLists;
         }
+
+        public TodoList GetList(string id)
+        {
+            return TodoLists.FirstOrDefault(tdl => tdl.Id == id) ?? throw new FaultException<RESTAPIExceptionData>(new RESTAPIExceptionData("Invalid id: " + id), new FaultReason("Invalid id: " + id));
+        }
+        #endregion
+
+        #region POST Methods
+        #endregion
     }
 }
