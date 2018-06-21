@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfTodoListService.DataModel" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfTodoList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TodoList" nillable="true" type="tns:TodoList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTodoList" nillable="true" type="tns:ArrayOfTodoList" />
+  <xs:complexType name="TodoList">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Base">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Tasks" nillable="true" type="tns:ArrayOfTask" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TodoList" nillable="true" type="tns:TodoList" />
+  <xs:complexType name="Base">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Base" nillable="true" type="tns:Base" />
+  <xs:complexType name="ArrayOfTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Task" nillable="true" type="tns:Task" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTask" nillable="true" type="tns:ArrayOfTask" />
+  <xs:complexType name="Task">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Base">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Completed" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Task" nillable="true" type="tns:Task" />
+  <xs:complexType name="RESTAPIExceptionData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RESTMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RESTAPIExceptionData" nillable="true" type="tns:RESTAPIExceptionData" />
+</xs:schema>

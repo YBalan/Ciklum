@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="eab9dbbf-7d30-4a5b-a900-cfac28880b78" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8000/ToDoListRestAPIService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ToDoListRestAPIService.xsd" MetadataType="Schema" ID="e5d639d2-ce7a-4682-ab7d-a579a3b76022" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ToDoListRestAPIService.disco" MetadataType="Disco" ID="fd19e0cf-ae87-475d-ba85-57ad60a05b16" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?disco" />
+    <MetadataFile FileName="ToDoListRestAPIService.wsdl" MetadataType="Wsdl" ID="a737eae0-0ede-4fa7-8608-51eaeac3b4dc" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?wsdl" />
+    <MetadataFile FileName="ToDoListRestAPIService1.xsd" MetadataType="Schema" ID="c1ad3a98-9b70-4d14-abe3-a6e66542f5e9" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ToDoListRestAPIService2.xsd" MetadataType="Schema" ID="339e4810-fec3-4118-96c7-698426a19d78" SourceId="1" SourceUrl="http://localhost:8000/ToDoListRestAPIService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
