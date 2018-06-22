@@ -31,10 +31,10 @@ namespace WcfTodoListService
         [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         AddObjectResult AddNewList(Stream data);
 
-        [OperationContract]
-        //[FaultContract(typeof(RESTAPIExceptionData))]
-        [WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
-        AddObjectResult AddNewTask(string listId, Stream data);
+        //[OperationContract]
+        ////[FaultContract(typeof(RESTAPIExceptionData))]
+        //[WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        //AddObjectResult AddNewTask(string listId, Stream data);
 
         //[OperationContract]
         //[FaultContract(typeof(RESTAPIExceptionData))]
