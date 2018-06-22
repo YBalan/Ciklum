@@ -28,16 +28,16 @@ namespace WcfTodoListService
 
         public TodoList GetList(string id)
         {
-            return TodoLists.FirstOrDefault(tdl => tdl.Id == id) ?? throw new FaultException(MessageFault.CreateFault(new FaultCode("404"), "List not found"));
+            return TodoLists.FirstOrDefault(tdl => tdl.id == id) ?? throw new FaultException(MessageFault.CreateFault(new FaultCode("404"), "List not found"));
         }
         #endregion
 
         #region POST Methods
-        public AddObjectResult AddNewList(string data)
+        public AddObjectResult AddNewList(Stream data)
         {
-            //using (var reader = new StreamReader(data))
+            using (var reader = new StreamReader(data))
             {
-                var json = BitConverter.ToString(Convert.FromBase64String(data));//reader.ReadToEnd();
+                var json = reader.ReadToEnd();//BitConverter.ToString(Convert.FromBase64String(data));//reader.ReadToEnd();
                 var list = json.DeserializeJson<TodoList>();
 
                 if (list == null)
@@ -45,7 +45,7 @@ namespace WcfTodoListService
                     return AddObjectResult.Invalid;
                 }
 
-                if (TodoLists.Any(tdl => tdl.Id == list.Id))
+                if (TodoLists.Any(tdl => tdl != null && tdl.id == list.id))
                 {
                     return AddObjectResult.Exists;
                 }
@@ -69,19 +69,19 @@ namespace WcfTodoListService
                     return AddObjectResult.Invalid;
                 }
 
-                var list = TodoLists.FirstOrDefault(tdl=>tdl.Id == listId);
+                var list = TodoLists.FirstOrDefault(tdl=>tdl.id == listId);
 
                 if (list == null)
                 {
                     return AddObjectResult.Invalid;                   
                 }
 
-                if (list.Tasks.Any(tsk => tsk.Id == task.Id))
+                if (list.tasks.Any(tsk => tsk != null && tsk.id == task.id))
                 {
                     return AddObjectResult.Exists;
                 }
 
-                list.AddTask(task);
+                list.tasks?.Add(task);
 
                 return AddObjectResult.Created;
             }
@@ -100,14 +100,14 @@ namespace WcfTodoListService
                     return AddObjectResult.Invalid;
                 }
 
-                var task = TodoLists.FirstOrDefault(tdl => tdl.Id == listId)?.Tasks.FirstOrDefault(tsk => tsk.Id == taskId);                
+                var task = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.id == listId)?.tasks?.FirstOrDefault(tsk => tsk != null && tsk.id == taskId);                
 
                 if (task == null)
                 {
                     return AddObjectResult.Invalid;
                 }
 
-                task.Completed = taskComplete.Completed;
+                task.completed = taskComplete.Completed;
 
                 return AddObjectResult.Created;
             }

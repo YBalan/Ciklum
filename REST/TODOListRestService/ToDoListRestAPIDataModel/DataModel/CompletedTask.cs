@@ -10,7 +10,7 @@ namespace ToDoListRestAPIDataModel.DataModel
     [DataContract]
     public sealed class CompletedTask
     {
-        [DataMember]
+        [DataMember(Name = "completed")]
         public bool Completed { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace UnitTests
                 // set method as post
                 webrequest.Method = "POST";
                 // set content type
-                webrequest.ContentType = "application/json";
+                webrequest.ContentType = "application/x-www-form-urlencoded";
                 // set content length
                 webrequest.ContentLength = data.Length;
                 // get stream data out of webrequest object

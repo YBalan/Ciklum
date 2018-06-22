@@ -44,22 +44,22 @@ namespace UnitTests
 
         public static readonly TodoList testList = new TodoList
         {
-            Id = Guid.NewGuid().ToString(),
-            Name = "Home",
-            Description = "The list of things that need to be done at home\n",
+            id = Guid.NewGuid().ToString(),
+            name = "Home",
+            description = "The list of things that need to be done at home\n",
         };
 
         public static readonly TodoListTask testTask = new TodoListTask
         {
-            Id = Guid.NewGuid().ToString(),
-            Name = "mow the yard",
-            Completed = false,
+            id = Guid.NewGuid().ToString(),
+            name = "mow the yard",
+            completed = false,
         };
 
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            testList.AddTask(testTask);
+            testList.tasks?.Add(testTask);
         }
 
         [TestMethod]
@@ -67,9 +67,11 @@ namespace UnitTests
         {
             try
             {
-                var jsonNewList = Convert.ToBase64String(Encoding.UTF8.GetBytes(testList.SerializeJson()));
+                //var jsonNewList = Convert.ToBase64String(Encoding.UTF8.GetBytes(testList.SerializeJson()));
+                var jsonNewList = testList.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
+                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/new", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -154,10 +156,10 @@ namespace UnitTests
             {
                 AddNewListTest();
 
-                testTask.Id = Guid.NewGuid().ToString();
+                testTask.id = Guid.NewGuid().ToString();
                 var jsonNewTask = testTask.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/tasks/{jsonNewTask}", string.Empty);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.id}/tasks/{jsonNewTask}", string.Empty);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -180,7 +182,7 @@ namespace UnitTests
 
                 var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/task/{testTask.Id}/complete/{jsonCompleteTask}", string.Empty);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.id}/task/{testTask.id}/complete/{jsonCompleteTask}", string.Empty);
                 var result = json.DeserializeJson<CompletedTask>();
                 Assert.IsNotNull(result);
 

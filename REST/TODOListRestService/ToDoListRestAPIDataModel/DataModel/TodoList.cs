@@ -8,27 +8,41 @@ using System.Web;
 
 namespace ToDoListRestAPIDataModel.DataModel
 {
-    [DataContract]
-    public sealed class TodoList : Base
+    //[DataContract]
+    //public sealed class TodoList : Base
+    //{
+    //    public TodoList()
+    //    {
+    //        Tasks = new List<Task>();
+    //    }
+
+    //    [DataMember(Name = "tasks")]
+    //    public List<Task> Tasks { get; set; }
+
+    //    [DataMember(Name = "description")]
+    //    public string Description { get; set; }
+
+    //    public void AddTask(Task tsk)
+    //    {
+    //        Tasks.Add(tsk);
+    //    }
+    //}
+
+    public class TodoList
     {
-        private BlockingCollection<Task> _tasks = new BlockingCollection<Task>();
-
-        [DataMember]
-        public IEnumerable<Task> Tasks
+        public TodoList()
         {
-            get => _tasks.ToArray();
-            set
-            {
-                _tasks = new BlockingCollection<Task>();
-                Parallel.ForEach(value, v => _tasks.TryAdd(v));
-            }
+            tasks = new List<Task>();
         }
-        [DataMember]
-        public string Description { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public List<Task> tasks { get; set; }
 
-        public void AddTask(Task tsk)
-        {
-            _tasks.TryAdd(tsk);
-        }
+        //public void AddTask(Task tsk)
+        //{
+        //    if (tasks == null) tasks = new List<Task>();
+        //    tasks.Add(tsk);
+        //}
     }
 }

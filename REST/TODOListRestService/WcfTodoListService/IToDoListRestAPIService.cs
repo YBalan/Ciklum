@@ -28,8 +28,8 @@ namespace WcfTodoListService
         #region POST Methods
         [OperationContract]
         [FaultContract(typeof(RESTAPIExceptionData))]
-        [WebInvoke(UriTemplate = "/lists/{data}", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        AddObjectResult AddNewList(string data);
+        [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        AddObjectResult AddNewList(Stream data);
 
         [OperationContract]
         //[FaultContract(typeof(RESTAPIExceptionData))]

@@ -13,9 +13,9 @@ namespace ToDoListRestAPIDataModel.DataModel
     {
         public static TResult DeserializeJson<TResult>(this string json) where TResult : class, new()
         {
-            var jsonSerSettings = new DataContractJsonSerializerSettings();
+            var jsonSerSettings = new DataContractJsonSerializerSettings();            
             var jsonSerializer = new DataContractJsonSerializer(typeof(TResult), jsonSerSettings);
-
+            
             TResult result = null;
             try
             {
@@ -34,7 +34,7 @@ namespace ToDoListRestAPIDataModel.DataModel
 
         public static string SerializeJson<TResult>(this TResult obj) where TResult : class, new()
         {
-            var jsonSerSettings = new DataContractJsonSerializerSettings();
+            var jsonSerSettings = new DataContractJsonSerializerSettings();            
             var jsonSerializer = new DataContractJsonSerializer(typeof(TResult), jsonSerSettings);
 
             var result = string.Empty;
