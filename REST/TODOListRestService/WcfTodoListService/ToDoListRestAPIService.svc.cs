@@ -28,7 +28,7 @@ namespace WcfTodoListService
 
         public TodoList GetList(string id)
         {
-            return TodoLists.FirstOrDefault(tdl => tdl.id == id) ?? throw new FaultException(MessageFault.CreateFault(new FaultCode("404"), "List not found"));
+            return TodoLists.FirstOrDefault(tdl => tdl.id == id);// ?? throw new FaultException(MessageFault.CreateFault(new FaultCode("404"), "List not found"));
         }
         #endregion
 

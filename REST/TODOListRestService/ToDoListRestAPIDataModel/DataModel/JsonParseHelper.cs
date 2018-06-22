@@ -43,7 +43,7 @@ namespace ToDoListRestAPIDataModel.DataModel
                 using (var memStream = new MemoryStream())
                 {
                     jsonSerializer.WriteObject(memStream, obj);
-                    result = Encoding.UTF8.GetString(memStream.GetBuffer());
+                    result = Encoding.UTF8.GetString(memStream.GetBuffer()).Trim('\0');
                 }
             }
             catch (Exception ex)

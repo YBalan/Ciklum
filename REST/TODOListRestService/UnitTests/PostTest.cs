@@ -46,7 +46,7 @@ namespace UnitTests
         {
             id = Guid.NewGuid().ToString(),
             name = "Home",
-            description = "The list of things that need to be done at home\n",
+            description = "The list of things that need to be done at home",
         };
 
         public static readonly TodoListTask testTask = new TodoListTask
@@ -69,7 +69,7 @@ namespace UnitTests
             {
                 //var jsonNewList = Convert.ToBase64String(Encoding.UTF8.GetBytes(testList.SerializeJson()));
                 var jsonNewList = testList.SerializeJson();
-
+                var o = jsonNewList.DeserializeJson<TodoList>();
                 //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
                 var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/new", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
