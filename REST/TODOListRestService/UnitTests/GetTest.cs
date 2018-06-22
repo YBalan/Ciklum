@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ToDoListRestAPIDataModel.DataModel;
@@ -9,6 +10,14 @@ namespace UnitTests
     public class GetTest
     {
         private const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
+
+        public static readonly TodoList testList = new TodoList
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Home",
+            Description = "The list of things that need to be done at home",
+        };
+
         [TestMethod]
         public void GetListsTest()
         {
@@ -30,7 +39,11 @@ namespace UnitTests
         {
             try
             {
-                var id = "validID"; // TODO
+                var jsonNewList = testList.SerializeJson();
+                
+                HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/new", jsonNewList);
+
+                var id = testList.Id;
                 var json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/" + id);
                 var list = json.DeserializeJson<TodoList>();
                 Assert.IsNotNull(list);
@@ -50,7 +63,7 @@ namespace UnitTests
             {
                 var json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/flagkjflgj");
                 var list = json.DeserializeJson<TodoList>();
-                Assert.IsNotNull(list);
+                Assert.IsNull(list);
 
             }
             catch (FaultException ex)

@@ -78,12 +78,12 @@ namespace UnitTests
                 Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
 
 
-                //json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/"+testList.Id);
+                json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/" + testList.Id);
 
-                //var list = json.DeserializeJson<TodoList>();
-                //Assert.IsNotNull(list);
+                var list = json.DeserializeJson<TodoList>();
+                Assert.IsNotNull(list);
 
-                //Assert.Equals(testList.Id, list.Id);
+                Assert.AreEqual(testList.Id, list.Id);
             }
             catch (FaultException ex)
             {
@@ -158,7 +158,8 @@ namespace UnitTests
                 testTask.Id = Guid.NewGuid().ToString();
                 var jsonNewTask = testTask.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/tasks/{jsonNewTask}", string.Empty);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testList.Id}/tasks", jsonNewTask);
+                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/tasks/{jsonNewTask}", string.Empty);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -181,7 +182,8 @@ namespace UnitTests
 
                 var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/task/{testTask.Id}/complete/{jsonCompleteTask}", string.Empty);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete", jsonCompleteTask);
+                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/task/{testTask.Id}/complete/{jsonCompleteTask}", string.Empty);
                 var result = json.DeserializeJson<CompletedTask>();
                 Assert.IsNotNull(result);
 

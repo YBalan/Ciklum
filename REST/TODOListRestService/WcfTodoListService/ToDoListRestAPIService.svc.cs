@@ -18,7 +18,7 @@ namespace WcfTodoListService
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
-        private BlockingCollection<TodoList> TodoLists = new BlockingCollection<TodoList>();
+        private List<TodoList> TodoLists = new List<TodoList>();
 
         #region GET Methods
         public IEnumerable<TodoList> GetLists()
@@ -50,18 +50,18 @@ namespace WcfTodoListService
                     return AddObjectResult.Exists;
                 }
 
-                TodoLists.TryAdd(list);
+                TodoLists.Add(list);
 
                 return AddObjectResult.Created;
             }
         }
 
 
-        public AddObjectResult AddNewTask(string listId, string data)
+        public AddObjectResult AddNewTask(string listId, Stream data)
         {
-            //using (var reader = new StreamReader(data))
+            using (var reader = new StreamReader(data))
             {
-                var json = data;//reader.ReadToEnd();
+                var json = reader.ReadToEnd();
                 var task = json.DeserializeJson<Task>();
 
                 if (task == null)
@@ -88,11 +88,11 @@ namespace WcfTodoListService
         }
 
 
-        public AddObjectResult TaskComplete(string listId, string taskId, string data)
+        public AddObjectResult TaskComplete(string listId, string taskId, Stream data)
         {
-            //using (var reader = new StreamReader(data))
+            using (var reader = new StreamReader(data))
             {
-                var json = data;//reader.ReadToEnd();
+                var json = reader.ReadToEnd();
                 var taskComplete = json.DeserializeJson<CompletedTask>();
 
                 if (taskComplete == null)
