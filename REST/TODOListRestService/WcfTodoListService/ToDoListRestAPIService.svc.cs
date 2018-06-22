@@ -37,7 +37,7 @@ namespace WcfTodoListService
         {
             //using (var reader = new StreamReader(data))
             {
-                var json = data;//reader.ReadToEnd();
+                var json = BitConverter.ToString(Convert.FromBase64String(data));//reader.ReadToEnd();
                 var list = json.DeserializeJson<TodoList>();
 
                 if (list == null)
@@ -61,7 +61,7 @@ namespace WcfTodoListService
         {
             //using (var reader = new StreamReader(data))
             {
-                var json = data;//reader.ReadToEnd();
+                var json = BitConverter.ToString(Convert.FromBase64String(data));//reader.ReadToEnd();
                 var task = json.DeserializeJson<Task>();
 
                 if (task == null)
@@ -92,7 +92,7 @@ namespace WcfTodoListService
         {
             //using (var reader = new StreamReader(data))
             {
-                var json = data;//reader.ReadToEnd();
+                var json = BitConverter.ToString(Convert.FromBase64String(data));//reader.ReadToEnd();
                 var taskComplete = json.DeserializeJson<CompletedTask>();
 
                 if (taskComplete == null)

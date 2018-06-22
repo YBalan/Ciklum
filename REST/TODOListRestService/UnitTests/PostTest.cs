@@ -66,10 +66,10 @@ namespace UnitTests
         public void AddNewListTest()
         {
             try
-            {               
-                var jsonNewList = testList.SerializeJson();
+            {
+                var jsonNewList = Convert.ToBase64String(Encoding.UTF8.GetBytes(testList.SerializeJson()));
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + string.Format(@"lists/""{0}""", jsonNewList), jsonNewList);
+                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -132,6 +132,7 @@ namespace UnitTests
 }";
 
                 var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "lists/new", jsonNewList);
+                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -151,7 +152,7 @@ namespace UnitTests
         {
             try
             {
-                AddNewListTest();               
+                AddNewListTest();
 
                 testTask.Id = Guid.NewGuid().ToString();
                 var jsonNewTask = testTask.SerializeJson();
@@ -175,7 +176,7 @@ namespace UnitTests
         {
             try
             {
-                AddNewListTest();                
+                AddNewListTest();
 
                 var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
