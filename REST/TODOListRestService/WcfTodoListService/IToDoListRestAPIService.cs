@@ -28,18 +28,18 @@ namespace WcfTodoListService
         #region POST Methods
         [OperationContract]
         [FaultContract(typeof(RESTAPIExceptionData))]
-        [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        AddObjectResult AddNewList(Stream data);
+        [WebInvoke(UriTemplate = "/lists/{data}", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        AddObjectResult AddNewList(string data);
 
-        //[OperationContract]
-        ////[FaultContract(typeof(RESTAPIExceptionData))]
-        //[WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
-        //AddObjectResult AddNewTask(string listId, Stream data);
-
-        //[OperationContract]
+        [OperationContract]
         //[FaultContract(typeof(RESTAPIExceptionData))]
-        //[WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        //AddObjectResult TaskComplete(string listId, string taskId, Stream data);
+        [WebInvoke(UriTemplate = "/list/{listId}/tasks/{data}", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        AddObjectResult AddNewTask(string listId, string data);
+
+        [OperationContract]
+        [FaultContract(typeof(RESTAPIExceptionData))]
+        [WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete/{data}", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        AddObjectResult TaskComplete(string listId, string taskId, string data);
         #endregion
     }   
 }

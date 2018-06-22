@@ -15,18 +15,15 @@ namespace WcfTodoListService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
-        private static BlockingCollection<TodoList> TodoLists = new BlockingCollection<TodoList>();
-        public string GetData(string value)
-        {
-            return string.Format("You entered: {0}", value);
-        }
-
+        private BlockingCollection<TodoList> TodoLists = new BlockingCollection<TodoList>();
+        
         #region GET Methods
         public IEnumerable<TodoList> GetLists()
         {
-            return TodoLists.ToArray();
+            return TodoLists;
         }
 
         public TodoList GetList(string id)
@@ -36,14 +33,14 @@ namespace WcfTodoListService
         #endregion
 
         #region POST Methods
-        public AddObjectResult AddNewList(Stream data)
+        public AddObjectResult AddNewList(string data)
         {
-            using (var reader = new StreamReader(data))
+            //using (var reader = new StreamReader(data))
             {
-                var json = reader.ReadToEnd();
+                var json = data;//reader.ReadToEnd();
                 var list = json.DeserializeJson<TodoList>();
 
-                if (list != null)
+                if (list == null)
                 {
                     return AddObjectResult.Invalid;
                 }
@@ -60,14 +57,14 @@ namespace WcfTodoListService
         }
 
 
-        public AddObjectResult AddNewTask(string listId, Stream data)
+        public AddObjectResult AddNewTask(string listId, string data)
         {
-            using (var reader = new StreamReader(data))
+            //using (var reader = new StreamReader(data))
             {
-                var json = reader.ReadToEnd();
+                var json = data;//reader.ReadToEnd();
                 var task = json.DeserializeJson<Task>();
 
-                if (task != null)
+                if (task == null)
                 {
                     return AddObjectResult.Invalid;
                 }
@@ -91,14 +88,14 @@ namespace WcfTodoListService
         }
 
 
-        public AddObjectResult TaskComplete(string listId, string taskId, Stream data)
+        public AddObjectResult TaskComplete(string listId, string taskId, string data)
         {
-            using (var reader = new StreamReader(data))
+            //using (var reader = new StreamReader(data))
             {
-                var json = reader.ReadToEnd();
+                var json = data;//reader.ReadToEnd();
                 var taskComplete = json.DeserializeJson<CompletedTask>();
 
-                if (taskComplete != null)
+                if (taskComplete == null)
                 {
                     return AddObjectResult.Invalid;
                 }

@@ -32,7 +32,7 @@ namespace ToDoListRestAPIDataModel.DataModel
             return result;
         }
 
-        public static string SerializeJsonJson<TResult>(this TResult obj) where TResult : class, new()
+        public static string SerializeJson<TResult>(this TResult obj) where TResult : class, new()
         {
             var jsonSerSettings = new DataContractJsonSerializerSettings();
             var jsonSerializer = new DataContractJsonSerializer(typeof(TResult), jsonSerSettings);
