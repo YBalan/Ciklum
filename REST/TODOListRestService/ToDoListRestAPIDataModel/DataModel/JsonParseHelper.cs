@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace ToDoListRestAPIDataModel.DataModel
 {
@@ -13,45 +14,26 @@ namespace ToDoListRestAPIDataModel.DataModel
     {
         public static TResult DeserializeJson<TResult>(this string json) where TResult : class, new()
         {
-            var jsonSerSettings = new DataContractJsonSerializerSettings();            
-            var jsonSerializer = new DataContractJsonSerializer(typeof(TResult), jsonSerSettings);
-            
-            TResult result = null;
             try
             {
-                using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-                {
-                    result = jsonSerializer.ReadObject(memStream) as TResult;
-                }
+                return new JavaScriptSerializer().Deserialize<TResult>(json);
             }
-            catch (Exception ex)
+            catch
             {
-                Trace.TraceError(ex.Message);
+                return null;
             }
-
-            return result;
         }
 
         public static string SerializeJson<TResult>(this TResult obj) where TResult : class, new()
-        {
-            var jsonSerSettings = new DataContractJsonSerializerSettings();            
-            var jsonSerializer = new DataContractJsonSerializer(typeof(TResult), jsonSerSettings);
-
-            var result = string.Empty;
+        {   
             try
-            {                
-                using (var memStream = new MemoryStream())
-                {
-                    jsonSerializer.WriteObject(memStream, obj);
-                    result = Encoding.UTF8.GetString(memStream.GetBuffer()).Trim('\0');
-                }
-            }
-            catch (Exception ex)
             {
-                Trace.TraceError(ex.Message);
+                return new JavaScriptSerializer().Serialize(obj);
             }
-
-            return result;
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }
