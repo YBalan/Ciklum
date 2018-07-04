@@ -14,8 +14,6 @@ namespace UnitTests
     [TestClass]
     public sealed class PostTest
     {
-        private const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
-
         //var jsonNewList =
         //@"{{
         //  ""id"": ""d290f1ee-6c54-4b01-90e6-d701748f0851"",
@@ -65,31 +63,23 @@ namespace UnitTests
         [TestMethod]
         public void AddNewListTest()
         {
-            try
-            {
-                var jsonNewList = testList.SerializeJson();
+            testList.Id = Guid.NewGuid().ToString();
+            var jsonNewList = testList.SerializeJson();
 
-                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/new", jsonNewList);
-                var result = json.DeserializeJson<AddObjectResult>();
-                Assert.IsNotNull(result);
+            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new", jsonNewList);
+            var result = json.DeserializeJson<AddObjectResult>();
+            Assert.IsNotNull(result);
 
-                Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
-                Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
+            Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
+            Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
 
 
-                json = HttpClientTestHelper.SendGet(REST_SERVICE_START_URL + "list/" + testList.Id);
+            json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
 
-                var list = json.DeserializeJson<TodoList>();
-                Assert.IsNotNull(list);
+            var list = json.DeserializeJson<TodoList>();
+            Assert.IsNotNull(list);
 
-                Assert.AreEqual(testList.Id, list.Id);
-            }
-            catch (FaultException ex)
-            {
-                Assert.Fail(ex.Message);
-                throw;
-            }
+            Assert.AreEqual(testList.Id, list.Id);
         }
 
         [TestMethod]
@@ -99,8 +89,8 @@ namespace UnitTests
             {
                 var jsonNewList = testList.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "lists/new", jsonNewList);
-                json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "lists/new", jsonNewList);
+                var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new", jsonNewList);
+                json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
 
@@ -132,7 +122,7 @@ namespace UnitTests
   
 }";
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + "lists/new", jsonNewList);
+                var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new", jsonNewList);
                 //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"lists/{jsonNewList}", jsonNewList);
                 var result = json.DeserializeJson<AddObjectResult>();
                 Assert.IsNotNull(result);
@@ -151,49 +141,33 @@ namespace UnitTests
         [TestMethod]
         public void AddNewTaskTest()
         {
-            try
-            {
-                AddNewListTest();
+            AddNewListTest();
 
-                testTask.Id = Guid.NewGuid().ToString();
-                var jsonNewTask = testTask.SerializeJson();
+            testTask.Id = Guid.NewGuid().ToString();
+            var jsonNewTask = testTask.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testList.Id}/tasks", jsonNewTask);
-                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/tasks/{jsonNewTask}", string.Empty);
-                var result = json.DeserializeJson<AddObjectResult>();
-                Assert.IsNotNull(result);
+            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks", jsonNewTask);
 
-                Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
-                Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
-            }
-            catch (FaultException ex)
-            {
-                Assert.Fail(ex.Message);
-                throw;
-            }
+            var result = json.DeserializeJson<AddObjectResult>();
+            Assert.IsNotNull(result);
+
+            Assert.AreEqual(AddObjectResult.Created.Code, result.Code);
+            Assert.AreEqual(AddObjectResult.Created.Description, result.Description);
         }
 
         [TestMethod]
         public void CompleteTaskTest()
         {
-            try
-            {
-                AddNewListTest();
+            AddNewListTest();
 
-                var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
+            var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
-                var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete", jsonCompleteTask);
-                //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/task/{testTask.Id}/complete/{jsonCompleteTask}", string.Empty);
-                var result = json.DeserializeJson<CompletedTask>();
-                Assert.IsNotNull(result);
+            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete", jsonCompleteTask);
+            //var json = HttpClientTestHelper.SendPost(REST_SERVICE_START_URL + $"list/{testTask.Id}/task/{testTask.Id}/complete/{jsonCompleteTask}", string.Empty);
+            var result = json.DeserializeJson<CompletedTask>();
+            Assert.IsNotNull(result);
 
-                Assert.IsFalse(result.Completed);
-            }
-            catch (FaultException ex)
-            {
-                Assert.Fail(ex.Message);
-                throw;
-            }
+            Assert.IsFalse(result.Completed);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace ToDoListRestAPIDataModel.DataModel
     {
         public TodoList()
         {
+            Id = Guid.NewGuid().ToString();
             Tasks = new List<Task>();
         }
 
@@ -26,23 +27,5 @@ namespace ToDoListRestAPIDataModel.DataModel
         {
             Tasks.Add(tsk);
         }
-    }
-
-    //public class TodoList
-    //{
-    //    public TodoList()
-    //    {
-    //        tasks = new List<Task>();
-    //    }
-    //    public string id { get; set; }
-    //    public string name { get; set; }
-    //    public string description { get; set; }
-    //    public List<Task> tasks { get; set; }
-
-    //    //public void AddTask(Task tsk)
-    //    //{
-    //    //    if (tasks == null) tasks = new List<Task>();
-    //    //    tasks.Add(tsk);
-    //    //}
-    //}
+    }    
 }

@@ -12,11 +12,4 @@ namespace ToDoListRestAPIDataModel.DataModel
         [DataMember(Name = "completed")]
         public bool Completed { get; set; }
     }
-
-    //public class Task
-    //{
-    //    public string id { get; set; }
-    //    public string name { get; set; }
-    //    public bool completed { get; set; }
-    //}
 }

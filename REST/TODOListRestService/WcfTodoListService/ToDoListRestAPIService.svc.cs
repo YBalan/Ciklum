@@ -19,6 +19,8 @@ namespace WcfTodoListService
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
         private List<TodoList> TodoLists = new List<TodoList>();
+        private readonly object _syncObjectAddNewList = new object();
+        private readonly object _syncObjectAddNewTask = new object();
 
         #region GET Methods
         public IEnumerable<TodoList> GetLists()
@@ -35,55 +37,61 @@ namespace WcfTodoListService
         #region POST Methods
         public AddObjectResult AddNewList(Stream data)
         {
-            using (var reader = new StreamReader(data))
+            lock(_syncObjectAddNewList)
             {
-                var json = reader.ReadToEnd();
-                var list = json.DeserializeJson<TodoList>();
-
-                if (list == null)
+                using (var reader = new StreamReader(data))
                 {
-                    return AddObjectResult.Invalid;
+                    var json = reader.ReadToEnd();
+                    var list = json.DeserializeJson<TodoList>();
+
+                    if (list == null)
+                    {
+                        return AddObjectResult.Invalid;
+                    }
+
+                    if (TodoLists.Any(tdl => tdl != null && tdl.Id == list.Id))
+                    {
+                        return AddObjectResult.Exists;
+                    }
+
+                    TodoLists.Add(list);
+
+                    return AddObjectResult.Created;
                 }
-
-                if (TodoLists.Any(tdl => tdl != null && tdl.Id == list.Id))
-                {
-                    return AddObjectResult.Exists;
-                }
-
-                TodoLists.Add(list);
-
-                return AddObjectResult.Created;
             }
         }
 
 
         public AddObjectResult AddNewTask(string listId, Stream data)
         {
-            using (var reader = new StreamReader(data))
+            lock (_syncObjectAddNewTask)
             {
-                var json = reader.ReadToEnd();
-                var task = json.DeserializeJson<Task>();
-
-                if (task == null)
+                using (var reader = new StreamReader(data))
                 {
-                    return AddObjectResult.Invalid;
+                    var json = reader.ReadToEnd();
+                    var task = json.DeserializeJson<Task>();
+
+                    if (task == null)
+                    {
+                        return AddObjectResult.Invalid;
+                    }
+
+                    var list = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId);
+
+                    if (list == null)
+                    {
+                        return AddObjectResult.Invalid;
+                    }
+
+                    if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
+                    {
+                        return AddObjectResult.Exists;
+                    }
+
+                    list.AddTask(task);
+
+                    return AddObjectResult.Created;
                 }
-
-                var list = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId);
-
-                if (list == null)
-                {
-                    return AddObjectResult.Invalid;
-                }
-
-                if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
-                {
-                    return AddObjectResult.Exists;
-                }
-
-                list.Tasks?.Add(task);
-
-                return AddObjectResult.Created;
             }
         }
 
