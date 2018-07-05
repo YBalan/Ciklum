@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfTodoListService", "WcfTodoListService\WcfTodoListService.csproj", "{1F5E81AF-D40A-4205-876C-B58FD8318705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{CD79ABC0-878D-4130-8484-410F1201661E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "UnitTests\Tests.csproj", "{CD79ABC0-878D-4130-8484-410F1201661E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F5E81AF-D40A-4205-876C-B58FD8318705} = {1F5E81AF-D40A-4205-876C-B58FD8318705}
 	EndProjectSection

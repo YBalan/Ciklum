@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTests
+namespace Tests
 {
     public static class HttpClientTestHelper
     {
@@ -35,35 +35,33 @@ namespace UnitTests
             }
         }
 
-        public static string SendPost(string uri, string jsonData)
+        public static string SendPost(string uri, string jsonData, out HttpStatusCode statusCode, out string description)
         {
             var strResult = string.Empty;
             var data = Encoding.ASCII.GetBytes(jsonData);
-            // declare httpwebrequet wrt url defined above
+
             var webrequest = (HttpWebRequest)WebRequest.Create(uri);
+
+            webrequest.Method = "POST";
+            webrequest.ContentType = "application/x-www-form-urlencoded";
+            webrequest.ContentLength = data.Length;
+
+            using (var newStream = webrequest.GetRequestStream())
             {
-                // set method as post
-                webrequest.Method = "POST";
-                // set content type
-                webrequest.ContentType = "application/x-www-form-urlencoded";
-                // set content length
-                webrequest.ContentLength = data.Length;
-                // get stream data out of webrequest object
-                using (var newStream = webrequest.GetRequestStream())
+                newStream.Write(data, 0, data.Length);
+            }
+
+            description = string.Empty;
+            statusCode = HttpStatusCode.BadRequest;
+
+            using (var webresponse = (HttpWebResponse)webrequest.GetResponse())
+            {
+                statusCode = webresponse.StatusCode;
+                description = webresponse.StatusDescription;
+
+                using (var loResponseStream = new StreamReader(webresponse.GetResponseStream(), Encoding.UTF8))
                 {
-                    newStream.Write(data, 0, data.Length);
-                }
-                // declare & read response from service
-                using (var webresponse = (HttpWebResponse)webrequest.GetResponse())
-                {
-                    // read response stream from response object
-                    using (var loResponseStream = new StreamReader(webresponse.GetResponseStream(), Encoding.UTF8))
-                    {
-                        // read string from stream data
-                        strResult = loResponseStream.ReadToEnd();
-                        // close the stream object
-                    }
-                    // close the response object
+                    strResult = loResponseStream.ReadToEnd();
                 }
             }
 

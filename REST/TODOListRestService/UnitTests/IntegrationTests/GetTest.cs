@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tests;
 using ToDoListRestAPIDataModel.DataModel;
+using ToDoListRestAPIDataModel.Helpers;
 
-namespace UnitTests
+using SCHelper = ToDoListRestAPIDataModel.Helpers.ResponseStatusCodeHelper;
+
+namespace IntegrationTests
 {
     [TestClass]
     public class GetTest
@@ -29,7 +34,10 @@ namespace UnitTests
         {
             var jsonNewList = testList.SerializeJson();
 
-            HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new", jsonNewList);
+            HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                            jsonNewList,
+                                                            out HttpStatusCode statusCode,
+                                                            out string description);
 
             var id = testList.Id;
             var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + id);

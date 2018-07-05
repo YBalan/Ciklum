@@ -1,126 +1,72 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
+using System.Net;
 using System.ServiceModel.Web;
-using System.Text;
 using ToDoListRestAPIDataModel.DataModel;
 
+using SCHelper = ToDoListRestAPIDataModel.Helpers.ResponseStatusCodeHelper;
 
 namespace WcfTodoListService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
-        private List<TodoList> TodoLists = new List<TodoList>();
-        private readonly object _syncObjectAddNewList = new object();
-        private readonly object _syncObjectAddNewTask = new object();
+        private void FillResponse(int code, Dictionary<int, string> map)
+        {
+            WebOperationContext.Current.OutgoingResponse.SetStatusAsNotFound();
+            if (Enum.IsDefined(typeof(HttpStatusCode), code))
+            {
+                var statusCode = (HttpStatusCode)code;
+                FillResponse(statusCode, map);
+            }
+        }
+
+        private void FillResponse(HttpStatusCode statusCode, Dictionary<int, string> map)
+        {
+            WebOperationContext.Current.OutgoingResponse.SetStatusAsNotFound();
+            int code = (int)statusCode;
+            if (map.ContainsKey(code))
+            {
+                WebOperationContext.Current.OutgoingResponse.StatusCode = statusCode;
+                WebOperationContext.Current.OutgoingResponse.StatusDescription = map[code];
+            }
+        }
 
         #region GET Methods
         public IEnumerable<TodoList> GetLists()
         {
-            return TodoLists;
+            FillResponse(HttpStatusCode.OK, SCHelper.GETStatusCodeMap);
+            var result = Persistence.Instance.GetLists();
+            return result;
         }
 
         public TodoList GetList(string id)
         {
-            return TodoLists.FirstOrDefault(tdl => tdl.Id == id);// ?? throw new FaultException(MessageFault.CreateFault(new FaultCode("404"), "List not found"));
+            var result = Persistence.Instance.GetList(id);
+            FillResponse(result == null ? HttpStatusCode.NotFound : HttpStatusCode.OK, SCHelper.GETStatusCodeMap);
+            return result;
         }
         #endregion
 
         #region POST Methods
-        public AddObjectResult AddNewList(Stream data)
+        public void AddNewList(Stream data)
         {
-            lock(_syncObjectAddNewList)
-            {
-                using (var reader = new StreamReader(data))
-                {
-                    var json = reader.ReadToEnd();
-                    var list = json.DeserializeJson<TodoList>();
-
-                    if (list == null)
-                    {
-                        return AddObjectResult.Invalid;
-                    }
-
-                    if (TodoLists.Any(tdl => tdl != null && tdl.Id == list.Id))
-                    {
-                        return AddObjectResult.Exists;
-                    }
-
-                    TodoLists.Add(list);
-
-                    return AddObjectResult.Created;
-                }
-            }
+            var statusCode = Persistence.Instance.AddNewList(data);
+            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
         }
 
-
-        public AddObjectResult AddNewTask(string listId, Stream data)
+        public void AddNewTask(string listId, Stream data)
         {
-            lock (_syncObjectAddNewTask)
-            {
-                using (var reader = new StreamReader(data))
-                {
-                    var json = reader.ReadToEnd();
-                    var task = json.DeserializeJson<Task>();
-
-                    if (task == null)
-                    {
-                        return AddObjectResult.Invalid;
-                    }
-
-                    var list = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId);
-
-                    if (list == null)
-                    {
-                        return AddObjectResult.Invalid;
-                    }
-
-                    if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
-                    {
-                        return AddObjectResult.Exists;
-                    }
-
-                    list.AddTask(task);
-
-                    return AddObjectResult.Created;
-                }
-            }
+            var statusCode = Persistence.Instance.AddNewTask(listId, data);
+            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
         }
 
-
-        public AddObjectResult TaskComplete(string listId, string taskId, Stream data)
+        public void TaskComplete(string listId, string taskId, Stream data)
         {
-            using (var reader = new StreamReader(data))
-            {
-                var json = reader.ReadToEnd();
-                var taskComplete = json.DeserializeJson<CompletedTask>();
-
-                if (taskComplete == null)
-                {
-                    return AddObjectResult.Invalid;
-                }
-
-                var task = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId)?.Tasks?.FirstOrDefault(tsk => tsk != null && tsk.Id == taskId);
-
-                if (task == null)
-                {
-                    return AddObjectResult.Invalid;
-                }
-
-                task.Completed = taskComplete.Completed;
-
-                return AddObjectResult.Created;
-            }
+            var statusCode = Persistence.Instance.TaskComplete(listId, taskId, data);
+            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
         }
-
         #endregion
     }
 }

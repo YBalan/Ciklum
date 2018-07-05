@@ -12,8 +12,7 @@ namespace ToDoListRestAPIDataModel.DataModel
     public sealed class TodoList : Base
     {
         public TodoList()
-        {
-            Id = Guid.NewGuid().ToString();
+        {            
             Tasks = new List<Task>();
         }
 
