@@ -34,6 +34,7 @@ namespace WcfTodoListService
         }
 
         #region GET Methods
+        //http://wcftodolistservice20180706114723.azurewebsites.net/ToDoListRestAPIService.svc/lists
         public IEnumerable<TodoList> GetLists()
         {
             FillResponse(HttpStatusCode.OK, SCHelper.GETStatusCodeMap);
