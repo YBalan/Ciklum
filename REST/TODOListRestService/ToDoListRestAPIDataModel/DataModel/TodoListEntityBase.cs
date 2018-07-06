@@ -7,17 +7,17 @@ using System.Web;
 namespace ToDoListRestAPIDataModel.DataModel
 {   
     [DataContract]
-    public class Base
+    public abstract class TodoListEntityBase : ITodoListEntity
     {
-        public Base()
+        public TodoListEntityBase()
         {
             Id = Guid.NewGuid().ToString();
         }
 
         [DataMember(Name="id")]
-        public string Id { get; set; }
+        public virtual string Id { get; set; }
 
         [DataMember(Name="name")]
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
     }
 }

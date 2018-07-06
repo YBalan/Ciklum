@@ -9,7 +9,7 @@ using System.Web;
 namespace ToDoListRestAPIDataModel.DataModel
 {
     [DataContract]
-    public sealed class TodoList : Base
+    public sealed class TodoList : TodoListEntityBase
     {
         public TodoList()
         {            
@@ -22,9 +22,9 @@ namespace ToDoListRestAPIDataModel.DataModel
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
-        public void AddTask(Task tsk)
+        public void AddTask(Task task)
         {
-            Tasks.Add(tsk);
+            Tasks.Add(task as Task);
         }
     }    
 }

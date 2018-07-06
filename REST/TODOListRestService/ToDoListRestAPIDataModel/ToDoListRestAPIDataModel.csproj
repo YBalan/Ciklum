@@ -42,8 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModel\Base.cs" />
+    <Compile Include="DataModel\TodoListEntityBase.cs" />
     <Compile Include="DataModel\CompletedTask.cs" />
+    <Compile Include="DataModel\ITodoListEntity.cs" />
     <Compile Include="DataModel\Persistence.cs" />
     <Compile Include="Helpers\JsonParseHelper.cs" />
     <Compile Include="DataModel\Task.cs" />
