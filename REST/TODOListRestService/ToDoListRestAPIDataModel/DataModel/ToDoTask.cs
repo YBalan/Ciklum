@@ -7,7 +7,7 @@ using System.Web;
 namespace ToDoListRestAPIDataModel.DataModel
 {
     [DataContract]
-    public sealed class Task : TodoListEntityBase
+    public sealed class ToDoTask : ToDoListEntityBase
     {
         [DataMember(Name = "completed")]
         public bool Completed { get; set; }

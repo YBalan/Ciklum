@@ -42,14 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataModel\TodoListEntityBase.cs" />
+    <Compile Include="DataModel\Status.cs" />
+    <Compile Include="DataModel\ToDoListEntityBase.cs" />
     <Compile Include="DataModel\CompletedTask.cs" />
-    <Compile Include="DataModel\ITodoListEntity.cs" />
+    <Compile Include="DataModel\IToDoListEntity.cs" />
     <Compile Include="DataModel\Persistence.cs" />
-    <Compile Include="Helpers\JsonParseHelper.cs" />
-    <Compile Include="DataModel\Task.cs" />
-    <Compile Include="DataModel\TodoList.cs" />
-    <Compile Include="Helpers\ResponseStatusCodeHelper.cs" />
+    <Compile Include="DataModel\ToDoTask.cs" />
+    <Compile Include="DataModel\ToDoList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

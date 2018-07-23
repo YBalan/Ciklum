@@ -12,25 +12,25 @@ namespace WcfTodoListService
         #region GET Methods
         [OperationContract]
         [WebGet(UriTemplate = "/lists", ResponseFormat = WebMessageFormat.Json)]
-        IEnumerable<TodoList> GetLists();
+        IEnumerable<ToDoList> GetLists();
 
-        [OperationContract]        
+        [OperationContract]
         [WebGet(UriTemplate = "/list/{id}", ResponseFormat = WebMessageFormat.Json)]
-        TodoList GetList(string id);
+        ToDoList GetList(string id);
         #endregion
 
         #region POST Methods
-        [OperationContract]        
+        [OperationContract]
         [WebInvoke(UriTemplate = "/lists/new", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         void AddNewList(Stream data);
 
-        [OperationContract]        
+        [OperationContract]
         [WebInvoke(UriTemplate = "/list/{listId}/tasks", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.WrappedRequest)]
         void AddNewTask(string listId, Stream data);
 
-        [OperationContract]        
+        [OperationContract]
         [WebInvoke(UriTemplate = "/list/{listId}/task/{taskId}/complete", Method = "POST", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         void TaskComplete(string listId, string taskId, Stream data);
         #endregion
-    }   
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +10,22 @@ using System.Web;
 namespace ToDoListRestAPIDataModel.DataModel
 {
     [DataContract]
-    public sealed class TodoList : TodoListEntityBase
+    public sealed class ToDoList : ToDoListEntityBase
     {
-        public TodoList()
+        public ToDoList()
         {            
-            Tasks = new List<Task>();
+            Tasks = new List<ToDoTask>();
         }
 
         [DataMember(Name = "tasks")]
-        public List<Task> Tasks { get; set; }
+        public List<ToDoTask> Tasks { get; set; }
 
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
-        public void AddTask(Task task)
+        public void AddTask(ToDoTask task)
         {
-            Tasks.Add(task as Task);
+            Tasks.Add(task as ToDoTask);
         }
     }    
 }

@@ -1,10 +1,12 @@
 ﻿
 
+using System;
+
 namespace ToDoListRestAPIDataModel.DataModel
 {
-    public interface ITodoListEntity
+    public interface IToDoListEntity
     {
-        string Id { get; set; }
+        Guid Id { get; set; }
         
         string Name { get; set; }
     }

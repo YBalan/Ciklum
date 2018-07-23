@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests;
 using ToDoListRestAPIDataModel.DataModel;
-using ToDoListRestAPIDataModel.Helpers;
 
-using SCHelper = ToDoListRestAPIDataModel.Helpers.ResponseStatusCodeHelper;
-
-namespace IntegrationTests
+namespace SystemTests
 {
     [TestClass]
     public class GetTest
     {
-        public static readonly TodoList testList = new TodoList
-        {
-            Id = Guid.NewGuid().ToString(),
+        public static readonly ToDoList testList = new ToDoList
+        {            
             Name = "Home",
             Description = "The list of things that need to be done at home",
         };
@@ -25,7 +19,7 @@ namespace IntegrationTests
         public void GetListsTest()
         {
             var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "lists");
-            var list = json.DeserializeJson<List<TodoList>>();
+            var list = json.DeserializeJson<List<ToDoList>>();
             Assert.IsNotNull(list);
         }
 
@@ -41,7 +35,7 @@ namespace IntegrationTests
 
             var id = testList.Id;
             var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + id);
-            var list = json.DeserializeJson<TodoList>();
+            var list = json.DeserializeJson<ToDoList>();
             Assert.IsNotNull(list);
         }
 
@@ -49,7 +43,7 @@ namespace IntegrationTests
         public void GetListNegativeTest()
         {
             var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/flagkjflgj");
-            var list = json.DeserializeJson<TodoList>();
+            var list = json.DeserializeJson<ToDoList>();
             Assert.IsNull(list);
         }
     }

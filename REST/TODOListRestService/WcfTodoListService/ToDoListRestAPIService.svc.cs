@@ -1,51 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.ServiceModel.Web;
+using System.Web.Script.Serialization;
 using ToDoListRestAPIDataModel.DataModel;
-
-using SCHelper = ToDoListRestAPIDataModel.Helpers.ResponseStatusCodeHelper;
 
 namespace WcfTodoListService
 {
     public sealed class ToDoListRestAPIService : IToDoListRestAPIService
     {
-        private void FillResponse(int code, Dictionary<int, string> map)
-        {
-            WebOperationContext.Current.OutgoingResponse.SetStatusAsNotFound();
-            if (Enum.IsDefined(typeof(HttpStatusCode), code))
-            {
-                var statusCode = (HttpStatusCode)code;
-                FillResponse(statusCode, map);
-            }
-        }
-
-        private void FillResponse(HttpStatusCode statusCode, Dictionary<int, string> map)
-        {
-            WebOperationContext.Current.OutgoingResponse.SetStatusAsNotFound();
-            int code = (int)statusCode;
-            if (map.ContainsKey(code))
-            {
-                WebOperationContext.Current.OutgoingResponse.StatusCode = statusCode;
-                WebOperationContext.Current.OutgoingResponse.StatusDescription = map[code];
-            }
-        }
-
         #region GET Methods
         //http://wcftodolistservice20180706114723.azurewebsites.net/ToDoListRestAPIService.svc/lists
-        public IEnumerable<TodoList> GetLists()
+        public IEnumerable<ToDoList> GetLists()
         {
-            FillResponse(HttpStatusCode.OK, SCHelper.GETStatusCodeMap);
+            FillResponse(Status.OK);
             var result = Persistence.Instance.GetLists();
             return result;
         }
 
-        public TodoList GetList(string id)
+        public ToDoList GetList(string id)
         {
             var result = Persistence.Instance.GetList(id);
-            FillResponse(result == null ? HttpStatusCode.NotFound : HttpStatusCode.OK, SCHelper.GETStatusCodeMap);
+            FillResponse(result == null ? Status.NotFound : Status.OK);
             return result;
         }
         #endregion
@@ -53,21 +29,69 @@ namespace WcfTodoListService
         #region POST Methods
         public void AddNewList(Stream data)
         {
-            var statusCode = Persistence.Instance.AddNewList(data);
-            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
+            var list = ReadStream<ToDoList>(data);
+            var statusCode = Persistence.Instance.AddNewList(list);
+            FillResponse(statusCode);
         }
 
         public void AddNewTask(string listId, Stream data)
         {
-            var statusCode = Persistence.Instance.AddNewTask(listId, data);
-            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
+            var task = ReadStream<ToDoTask>(data);
+            var statusCode = Persistence.Instance.AddNewTask(listId, task);
+            FillResponse(statusCode);
         }
 
         public void TaskComplete(string listId, string taskId, Stream data)
         {
-            var statusCode = Persistence.Instance.TaskComplete(listId, taskId, data);
-            FillResponse(statusCode, SCHelper.POSTStatusCodeMap);
+            var completedTask = ReadStream<CompletedTask>(data);
+            var statusCode = Persistence.Instance.TaskComplete(listId, taskId, completedTask.Completed);
+            FillResponse(statusCode);
         }
         #endregion
+
+        private void FillResponse(Status code)
+        {
+            var result = HttpStatusCode.NotFound;
+            switch (code)
+            {
+                case Status.OK:
+                    result = HttpStatusCode.OK;
+                    break;
+                case Status.Invalid:
+                    result = HttpStatusCode.BadRequest;
+                    break;
+                case Status.NotFound:
+                    result = HttpStatusCode.NotFound;
+                    break;
+                case Status.AlreadyExist:
+                    result = HttpStatusCode.Conflict;
+                    break;
+                case Status.Created:
+                    result = HttpStatusCode.Created;
+                    break;
+                default:
+                    result = HttpStatusCode.BadRequest;
+                    break;
+            }
+
+            WebOperationContext.Current.OutgoingResponse.StatusCode = result;
+        }
+
+        private TResult ReadStream<TResult>(Stream stream) where TResult : class, new()
+        {
+            try
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    var json = reader.ReadToEnd();
+                    return new JavaScriptSerializer().Deserialize<TResult>(json);
+                }
+            }
+            catch
+            {
+                throw new WebFaultException(HttpStatusCode.BadRequest);
+            }
+        }
+
     }
 }

@@ -62,14 +62,15 @@
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntegrationTests\GetTest.cs" />
-    <Compile Include="HttpClientTestHelper.cs" />
-    <Compile Include="IntegrationTests\PostTest.cs" />
+    <Compile Include="SystemTests\GetTest.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="SystemTests\PostTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IntegrationTests\ConcurrencyTest.cs" />
+    <Compile Include="SystemTests\ConcurrencyTest.cs" />
     <Compile Include="UnitTests\PersistenceTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,13 +9,14 @@ using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace Tests
 {
     public static class HttpClientTestHelper
     {
-        //public const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
-        public const string REST_SERVICE_START_URL = "http://wcftodolistservice20180706114723.azurewebsites.net/ToDoListRestAPIService.svc/";
+        public const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
+        //public const string REST_SERVICE_START_URL = "http://wcftodolistservice20180706114723.azurewebsites.net/ToDoListRestAPIService.svc/";
         public static string SendGet(string uri)
         {
             using (var httpClient = new HttpClient())
@@ -66,6 +67,16 @@ namespace Tests
             }
 
             return strResult;
+        }
+
+        public static string SerializeJson(this object obj)
+        {
+            return new JavaScriptSerializer().Serialize(obj);
+        }
+
+        public static TResult DeserializeJson<TResult>(this string json) where TResult : class, new()
+        {
+            return new JavaScriptSerializer().Deserialize<TResult>(json);
         }
     }
 }

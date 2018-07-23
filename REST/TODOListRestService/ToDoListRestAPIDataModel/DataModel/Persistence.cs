@@ -1,21 +1,16 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoListRestAPIDataModel.Helpers;
 
 namespace ToDoListRestAPIDataModel.DataModel
 {
     public sealed class Persistence
     {
         private static volatile Persistence _instance;
-        private IList<TodoList> TodoLists = new List<TodoList>();
+        private IList<ToDoList> TodoLists = new List<ToDoList>();
 
         private static readonly object _syncObjectSigletone = new object();
-        private readonly object _syncObjectAddNewList = new object();
-        private readonly object _syncObjectAddNewTask = new object();
 
         private Persistence()
         {
@@ -42,106 +37,81 @@ namespace ToDoListRestAPIDataModel.DataModel
         }
 
         #region GET Methods
-        public IEnumerable<TodoList> GetLists()
+        public IEnumerable<ToDoList> GetLists()
         {
             return TodoLists;
         }
 
-        public TodoList GetList(string id)
+        public ToDoList GetList(string id)
         {
-            return TodoLists.FirstOrDefault(tdl => tdl.Id == id);
+            return TodoLists.FirstOrDefault(tdl => tdl.Id == ParseGuid(id));
+        }
+
+        private static Guid ParseGuid(string id)
+        {
+            Guid.TryParse(id, out Guid res);
+            return res;
         }
         #endregion
 
         #region POST Methods
-        public int AddNewList(Stream data)
+        public Status AddNewList(ToDoList list)
         {
-            using (var reader = new StreamReader(data))
+            if (list == null)
             {
-                var json = reader.ReadToEnd();
-                var list = json.DeserializeJson<TodoList>();
-
-                if (list == null)
-                {
-                    return 400;
-                }
-
-                if (TodoLists.Any(tdl => tdl != null && tdl.Id == list.Id))
-                {
-                    return 409;
-                }
-
-                lock (_syncObjectAddNewList)
-                {
-                    TodoLists.Add(list);
-                }
-
-                return 201;
+                return Status.Invalid;
             }
+
+            if (TodoLists.Any(tdl => tdl.Id == list.Id))
+            {
+                return Status.AlreadyExist;
+            }
+
+            TodoLists.Add(list);
+
+            return Status.Created;
         }
 
 
-        public int AddNewTask(string listId, Stream data)
+        public Status AddNewTask(string listId, ToDoTask task)
         {
-            using (var reader = new StreamReader(data))
+            if (task == null)
             {
-                var json = reader.ReadToEnd();
-                var task = json.DeserializeJson<Task>();
-
-                if (task == null)
-                {
-                    return 400;
-                }
-
-                var list = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId);
-
-                if (list == null)
-                {
-                    return 400;
-                }
-
-                if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
-                {
-                    return 409;
-                }
-
-                lock (_syncObjectAddNewTask)
-                {
-                    list.AddTask(task);
-                }
-
-                return 201;
+                return Status.Invalid;
             }
+
+            var list = TodoLists.FirstOrDefault(tdl => tdl.Id == ParseGuid(listId));
+
+            if (list == null)
+            {
+                return Status.NotFound;
+            }
+
+            if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
+            {
+                return Status.AlreadyExist;
+            }
+
+            list.AddTask(task);
+
+            return Status.Created;
         }
 
-
-        public int TaskComplete(string listId, string taskId, Stream data)
+        public Status TaskComplete(string listId, string taskId, bool completed)
         {
-            using (var reader = new StreamReader(data))
+            var task = TodoLists.FirstOrDefault(tdl =>  tdl.Id == ParseGuid(listId))?.
+                       Tasks?.FirstOrDefault(tsk => tsk.Id == ParseGuid(taskId));
+
+            if (task == null)
             {
-                var json = reader.ReadToEnd();
-                var taskComplete = json.DeserializeJson<CompletedTask>();
-
-                if (taskComplete == null)
-                {
-                    return 400;
-                }
-
-                var task = TodoLists.FirstOrDefault(tdl => tdl != null && tdl.Id == listId)?.
-                           Tasks?.FirstOrDefault(tsk => tsk != null && tsk.Id == taskId);
-
-                if (task == null)
-                {
-                    return 400;
-                }
-
-                task.Completed = taskComplete.Completed;
-
-                return 201;
+                return Status.NotFound;
             }
+
+            task.Completed = completed;
+
+            return Status.Created;
         }
-
-        #endregion
-
     }
+    #endregion
 }
+

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests;
 using ToDoListRestAPIDataModel.DataModel;
-using ToDoListRestAPIDataModel.Helpers;
 
-using SCHelper = ToDoListRestAPIDataModel.Helpers.ResponseStatusCodeHelper;
-
-namespace IntegrationTests
+namespace SystemTests
 {
     [TestClass]
     public class ConcurrencyTest
@@ -18,9 +14,8 @@ namespace IntegrationTests
         {
             Parallel.For(0, 10, (i) =>
                 {
-                    var list = new TodoList
-                    {
-                        Id = Guid.NewGuid().ToString(),
+                    var list = new ToDoList
+                    {                        
                         Name = i.ToString(),
                     };
 
@@ -31,8 +26,7 @@ namespace IntegrationTests
                                                             out HttpStatusCode statusCode,
                                                             out string description);
 
-                    Assert.AreEqual(201, (int)statusCode);
-                    //Assert.AreEqual(SCHelper.GetGETDescription(201), description);
+                    Assert.AreEqual(201, (int)statusCode);                    
 
                 });
         }
@@ -40,9 +34,8 @@ namespace IntegrationTests
         [TestMethod]
         public void AddNewTask()
         {
-            var list = new TodoList
-            {
-                Id = Guid.NewGuid().ToString(),
+            var list = new ToDoList
+            {                
                 Name = "Test",
             };
 
@@ -53,14 +46,12 @@ namespace IntegrationTests
                                                             out HttpStatusCode statusCode,
                                                             out string description);
 
-            Assert.AreEqual(201, (int)statusCode);
-            //Assert.AreEqual(SCHelper.GetGETDescription(201), description);
+            Assert.AreEqual(201, (int)statusCode);            
 
             Parallel.For(0, 10, (i) =>            
             {
-                var task = new ToDoListRestAPIDataModel.DataModel.Task
-                {
-                    Id = Guid.NewGuid().ToString(),
+                var task = new ToDoListRestAPIDataModel.DataModel.ToDoTask
+                {                    
                     Name = i.ToString(),
                 };
 
@@ -71,8 +62,7 @@ namespace IntegrationTests
                                                             out HttpStatusCode statusCodeTask,
                                                             out string descriptionTask);
 
-                Assert.AreEqual(201, (int)statusCodeTask);
-                //Assert.AreEqual(SCHelper.GetGETDescription(201), descriptionTask);
+                Assert.AreEqual(201, (int)statusCodeTask);                
 
             });
         }
