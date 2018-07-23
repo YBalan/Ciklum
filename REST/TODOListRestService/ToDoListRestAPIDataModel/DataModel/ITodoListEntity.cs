@@ -9,5 +9,7 @@ namespace ToDoListRestAPIDataModel.DataModel
         Guid Id { get; set; }
         
         string Name { get; set; }
+
+        bool Validate();
     }
 }

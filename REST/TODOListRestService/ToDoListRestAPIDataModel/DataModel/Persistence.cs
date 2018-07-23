@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,19 +44,13 @@ namespace ToDoListRestAPIDataModel.DataModel
         public ToDoList GetList(string id)
         {
             return TodoLists.FirstOrDefault(tdl => tdl.Id == ParseGuid(id));
-        }
-
-        private static Guid ParseGuid(string id)
-        {
-            Guid.TryParse(id, out Guid res);
-            return res;
-        }
+        }        
         #endregion
 
         #region POST Methods
         public Status AddNewList(ToDoList list)
         {
-            if (list == null)
+            if (list == null || !list.Validate())
             {
                 return Status.Invalid;
             }
@@ -75,7 +68,7 @@ namespace ToDoListRestAPIDataModel.DataModel
 
         public Status AddNewTask(string listId, ToDoTask task)
         {
-            if (task == null)
+            if (task == null || string.IsNullOrWhiteSpace(listId) || !task.Validate())
             {
                 return Status.Invalid;
             }
@@ -99,6 +92,11 @@ namespace ToDoListRestAPIDataModel.DataModel
 
         public Status TaskComplete(string listId, string taskId, bool completed)
         {
+            if (string.IsNullOrWhiteSpace(listId) || string.IsNullOrWhiteSpace(taskId))
+            {
+                return Status.Invalid;
+            }
+
             var task = TodoLists.FirstOrDefault(tdl =>  tdl.Id == ParseGuid(listId))?.
                        Tasks?.FirstOrDefault(tsk => tsk.Id == ParseGuid(taskId));
 
@@ -110,6 +108,12 @@ namespace ToDoListRestAPIDataModel.DataModel
             task.Completed = completed;
 
             return Status.Created;
+        }
+
+        private static Guid ParseGuid(string id)
+        {
+            Guid.TryParse(id, out Guid res);
+            return res;
         }
     }
     #endregion

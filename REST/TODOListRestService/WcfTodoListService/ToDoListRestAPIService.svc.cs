@@ -20,22 +20,29 @@ namespace WcfTodoListService
 
         public ToDoList GetList(string id)
         {
+            CheckId(id);
+
             var result = Persistence.Instance.GetList(id);
             FillResponse(result == null ? Status.NotFound : Status.OK);
             return result;
-        }
+        }        
         #endregion
 
         #region POST Methods
         public void AddNewList(Stream data)
         {
+            CheckBody(data);
+
             var list = ReadStream<ToDoList>(data);
             var statusCode = Persistence.Instance.AddNewList(list);
             FillResponse(statusCode);
-        }
+        }        
 
         public void AddNewTask(string listId, Stream data)
         {
+            CheckId(listId);
+            CheckBody(data);
+
             var task = ReadStream<ToDoTask>(data);
             var statusCode = Persistence.Instance.AddNewTask(listId, task);
             FillResponse(statusCode);
@@ -43,11 +50,27 @@ namespace WcfTodoListService
 
         public void TaskComplete(string listId, string taskId, Stream data)
         {
+            CheckId(listId);
+            CheckId(taskId);
+            CheckBody(data);
+
             var completedTask = ReadStream<CompletedTask>(data);
             var statusCode = Persistence.Instance.TaskComplete(listId, taskId, completedTask.Completed);
             FillResponse(statusCode);
         }
         #endregion
+
+        private static void CheckId(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new WebFaultException(HttpStatusCode.BadRequest);
+        }
+
+        private static void CheckBody(Stream data)
+        {
+            if (data == null)
+                throw new WebFaultException(HttpStatusCode.BadRequest);
+        }
 
         private void FillResponse(Status code)
         {

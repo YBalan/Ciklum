@@ -34,20 +34,11 @@ namespace SystemTests
         {
             var jsonNewList = @"{}";
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+            Assert.ThrowsException<WebException>(() => HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
                                                             jsonNewList,
                                                             out HttpStatusCode statusCode,
-                                                            out string description);
+                                                            out string description));
 
-            Assert.AreEqual(201, (int)statusCode);
-
-
-            json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
-
-            var list = json.DeserializeJson<ToDoList>();
-            Assert.IsNotNull(list);
-
-            Assert.AreEqual(testList.Id, list.Id);
         }
 
         [TestMethod]
@@ -61,7 +52,7 @@ namespace SystemTests
                                                             out HttpStatusCode statusCode,
                                                             out string description);
 
-            Assert.AreEqual(201, (int)statusCode);           
+            Assert.AreEqual(201, (int)statusCode);
 
 
             json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);

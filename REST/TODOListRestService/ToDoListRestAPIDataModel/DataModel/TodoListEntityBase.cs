@@ -19,5 +19,10 @@ namespace ToDoListRestAPIDataModel.DataModel
 
         [DataMember(Name="name")]
         public virtual string Name { get; set; }
+
+        public bool Validate()
+        {
+            return Id != null && !string.IsNullOrEmpty(Name);
+        }
     }
 }
