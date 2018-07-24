@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace ToDoListRestAPIDataModel.DataModel
     public sealed class Persistence
     {
         private static volatile Persistence _instance;
-        private IList<ToDoList> TodoLists = new List<ToDoList>();
+        private ConcurrentBag<ToDoList> TodoLists = new ConcurrentBag<ToDoList>();
 
         private static readonly object _syncObjectSigletone = new object();
 

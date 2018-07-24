@@ -18,14 +18,14 @@ namespace ToDoListRestAPIDataModel.DataModel
         }
 
         [DataMember(Name = "tasks")]
-        public List<ToDoTask> Tasks { get; set; }
+        public IList<ToDoTask> Tasks { get; set; }
 
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
         public void AddTask(ToDoTask task)
         {
-            Tasks.Add(task as ToDoTask);
+            Tasks.Add(task);
         }
     }    
 }

@@ -26,7 +26,7 @@ namespace SystemTests
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            testList.Tasks?.Add(testTask);
+            testList.AddTask(testTask);
         }
 
         [TestMethod]
@@ -98,10 +98,7 @@ namespace SystemTests
             Assert.ThrowsException<WebException>(() => HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new",
                                                     jsonNewList,
                                                     out HttpStatusCode statusCode,
-                                                    out string description));
-
-            //Assert.AreEqual(400, (int)statusCode);
-            //Assert.AreEqual(SCHelper.GetGETDescription(400), description);
+                                                    out string description));            
         }
 
 
@@ -113,7 +110,7 @@ namespace SystemTests
             testTask.Id = Guid.NewGuid();
             var jsonNewTask = testTask.SerializeJson();
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+            HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
                                                         jsonNewTask,
                                                         out HttpStatusCode statusCode,
                                                         out string description);
