@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tests;
@@ -15,18 +17,24 @@ namespace SystemTests
             Parallel.For(0, 10, (i) =>
                 {
                     var list = new ToDoList
-                    {                        
+                    {
                         Name = i.ToString(),
                     };
 
                     var jsonNewList = list.SerializeJson();
 
-                    var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
-                                                            jsonNewList,
-                                                            out HttpStatusCode statusCode,
-                                                            out string description);
+                    TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                             jsonNewList,
+                                                             out HttpStatusCode statusCode,
+                                                             out string description);
 
-                    Assert.AreEqual(201, (int)statusCode);                    
+                    Assert.AreEqual(201, (int)statusCode);
+
+                    var json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + list.Id);
+
+                    var result = json.DeserializeJson<ToDoList>();
+                    Assert.IsNotNull(result);
+                    Assert.AreEqual(list.Id, result.Id);
 
                 });
         }
@@ -35,35 +43,41 @@ namespace SystemTests
         public void AddNewTask()
         {
             var list = new ToDoList
-            {                
+            {
                 Name = "Test",
             };
 
             var jsonNewList = list.SerializeJson();
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+            var json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
                                                             jsonNewList,
                                                             out HttpStatusCode statusCode,
                                                             out string description);
 
-            Assert.AreEqual(201, (int)statusCode);            
+            Assert.AreEqual(201, (int)statusCode);
 
-            Parallel.For(0, 10, (i) =>            
+            Parallel.For(0, 10, (i) =>
             {
-                var task = new ToDoListRestAPIDataModel.DataModel.ToDoTask
-                {                    
+                var task = new ToDoTask
+                {
                     Name = i.ToString(),
                 };
 
                 var jsonNewTask = task.SerializeJson();
 
-                var jsonTask = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{list.Id}/tasks",
+                var jsonTask = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{list.Id}/tasks",
                                                             jsonNewTask,
                                                             out HttpStatusCode statusCodeTask,
                                                             out string descriptionTask);
 
-                Assert.AreEqual(201, (int)statusCodeTask);                
+                Assert.AreEqual(201, (int)statusCodeTask);
 
+                json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + list.Id);
+
+                var result = json.DeserializeJson<ToDoList>();
+                Assert.IsNotNull(result);
+                Assert.AreEqual(list.Id, result.Id);
+                Assert.IsTrue(result.Tasks.Any(t => t.Id == task.Id));
             });
         }
     }

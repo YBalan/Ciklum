@@ -13,7 +13,7 @@ using System.Web.Script.Serialization;
 
 namespace Tests
 {
-    public static class HttpClientTestHelper
+    public static class TestHelper
     {
         public const string REST_SERVICE_START_URL = "http://localhost:8000/ToDoListRestAPIService.svc/";
         //public const string REST_SERVICE_START_URL = "http://wcftodolistservice20180706114723.azurewebsites.net/ToDoListRestAPIService.svc/";

@@ -34,7 +34,7 @@ namespace SystemTests
         {
             var jsonNewList = @"{}";
 
-            Assert.ThrowsException<WebException>(() => HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+            Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
                                                             jsonNewList,
                                                             out HttpStatusCode statusCode,
                                                             out string description));
@@ -47,7 +47,7 @@ namespace SystemTests
             testList.Id = Guid.NewGuid();
             var jsonNewList = testList.SerializeJson();
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+            var json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
                                                             jsonNewList,
                                                             out HttpStatusCode statusCode,
                                                             out string description);
@@ -55,7 +55,7 @@ namespace SystemTests
             Assert.AreEqual(201, (int)statusCode);
 
 
-            json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
+            json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
 
             var list = json.DeserializeJson<ToDoList>();
             Assert.IsNotNull(list);
@@ -68,12 +68,12 @@ namespace SystemTests
         {
             var jsonNewList = testList.SerializeJson();
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new",
+            var json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + "lists/new",
                                                         jsonNewList,
                                                         out HttpStatusCode statusCode,
                                                         out string description);
 
-            Assert.ThrowsException<WebException>(() => json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new",
+            Assert.ThrowsException<WebException>(() => json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + "lists/new",
                                                         jsonNewList,
                                                         out HttpStatusCode statusCode1,
                                                         out string description1));
@@ -95,7 +95,7 @@ namespace SystemTests
   
 }";
 
-            Assert.ThrowsException<WebException>(() => HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + "lists/new",
+            Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + "lists/new",
                                                     jsonNewList,
                                                     out HttpStatusCode statusCode,
                                                     out string description));            
@@ -110,7 +110,7 @@ namespace SystemTests
             testTask.Id = Guid.NewGuid();
             var jsonNewTask = testTask.SerializeJson();
 
-            HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
                                                         jsonNewTask,
                                                         out HttpStatusCode statusCode,
                                                         out string description);
@@ -125,7 +125,7 @@ namespace SystemTests
 
             var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
-            var json = HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete",
+            var json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete",
                                                         jsonCompleteTask,
                                                         out HttpStatusCode statusCode,
                                                         out string description);

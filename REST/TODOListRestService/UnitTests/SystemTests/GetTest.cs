@@ -18,7 +18,7 @@ namespace SystemTests
         [TestMethod]
         public void GetListsTest()
         {
-            var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "lists");
+            var json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "lists");
             var list = json.DeserializeJson<List<ToDoList>>();
             Assert.IsNotNull(list);
         }
@@ -28,13 +28,13 @@ namespace SystemTests
         {
             var jsonNewList = testList.SerializeJson();
 
-            HttpClientTestHelper.SendPost(HttpClientTestHelper.REST_SERVICE_START_URL + $"lists/new",
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
                                                             jsonNewList,
                                                             out HttpStatusCode statusCode,
                                                             out string description);
 
             var id = testList.Id;
-            var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/" + id);
+            var json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + id);
             var list = json.DeserializeJson<ToDoList>();
             Assert.IsNotNull(list);
         }
@@ -42,7 +42,7 @@ namespace SystemTests
         [TestMethod]
         public void GetListNegativeTest()
         {
-            var json = HttpClientTestHelper.SendGet(HttpClientTestHelper.REST_SERVICE_START_URL + "list/flagkjflgj");
+            var json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/flagkjflgj");
             var list = json.DeserializeJson<ToDoList>();
             Assert.IsNull(list);
         }
