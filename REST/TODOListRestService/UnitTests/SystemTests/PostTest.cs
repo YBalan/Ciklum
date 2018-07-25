@@ -1,10 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Net;
 using Tests;
 using ToDoListRestAPIDataModel.DataModel;
-
-using TodoListTask = ToDoListRestAPIDataModel.DataModel.ToDoTask;
 
 namespace SystemTests
 {
@@ -17,7 +16,7 @@ namespace SystemTests
             Description = "The list of things that need to be done at home",
         };
 
-        public static readonly TodoListTask testTask = new TodoListTask
+        public static readonly ToDoTask testTask = new ToDoTask
         {
             Name = "mow the yard",
             Completed = false,
@@ -66,6 +65,7 @@ namespace SystemTests
         [TestMethod]
         public void AddExistListTest()
         {
+            testList.Id = Guid.NewGuid();
             var jsonNewList = testList.SerializeJson();
 
             var json = TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + "lists/new",
@@ -98,30 +98,53 @@ namespace SystemTests
             Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + "lists/new",
                                                     jsonNewList,
                                                     out HttpStatusCode statusCode,
-                                                    out string description));            
+                                                    out string description));
         }
 
 
         [TestMethod]
         public void AddNewTaskTest()
         {
-            AddNewListTest();
+            testList.Id = Guid.NewGuid();
+            var jsonNewList = testList.SerializeJson();
+
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                            jsonNewList,
+                                                            out HttpStatusCode statusCode,
+                                                            out string description);
+
+            Assert.AreEqual(201, (int)statusCode);
 
             testTask.Id = Guid.NewGuid();
             var jsonNewTask = testTask.SerializeJson();
 
             TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
                                                         jsonNewTask,
-                                                        out HttpStatusCode statusCode,
-                                                        out string description);
+                                                        out HttpStatusCode statusCode1,
+                                                        out string description1);
 
-            Assert.AreEqual(201, (int)statusCode);
+            Assert.AreEqual(201, (int)statusCode1);
+
+            var json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
+
+            var result = json.DeserializeJson<ToDoList>();
+            Assert.IsNotNull(result);
+            Assert.AreEqual(testList.Id, result.Id);
+            Assert.IsTrue(result.Tasks.Any(t => t.Id == testTask.Id));
         }
 
         [TestMethod]
         public void CompleteTaskTest()
         {
-            AddNewListTest();
+            testList.Id = Guid.NewGuid();
+            var jsonNewList = testList.SerializeJson();
+
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                            jsonNewList,
+                                                            out HttpStatusCode statusCode1,
+                                                            out string description1);
+
+            Assert.AreEqual(201, (int)statusCode1);
 
             var jsonCompleteTask = new CompletedTask { Completed = true }.SerializeJson();
 
@@ -131,6 +154,86 @@ namespace SystemTests
                                                         out string description);
 
             Assert.AreEqual(201, (int)statusCode);
+
+            json = TestHelper.SendGet(TestHelper.REST_SERVICE_START_URL + "list/" + testList.Id);
+
+            var result = json.DeserializeJson<ToDoList>();
+            Assert.IsNotNull(result);
+            Assert.AreEqual(testList.Id, result.Id);
+            Assert.IsTrue(result.Tasks.First(t => t.Id == testTask.Id).Completed);
+        }
+
+        [TestMethod]
+        public void WrongCompleteTaskTest()
+        {
+            testList.Id = Guid.NewGuid();
+            var jsonNewList = testList.SerializeJson();
+
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                            jsonNewList,
+                                                            out HttpStatusCode statusCode1,
+                                                            out string description1);
+
+            Assert.AreEqual(201, (int)statusCode1);
+
+            var jsonCompleteTask = @"{111}";
+
+            Assert.ThrowsException<WebException>(()=> TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/task/{testTask.Id}/complete",
+                                                        jsonCompleteTask,
+                                                        out HttpStatusCode statusCode,
+                                                        out string description));            
+        }
+
+        [TestMethod]
+        public void AddWrongTaskTest()
+        {
+            var jsonNewTask = @"{{\""1111Completed\"":false,\""Id\"":\""63a68f77-be9e-49fa-ba0b-f42eb0b025ae\"",\""Name\"":\""mow the yard\""}";
+
+            Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+                                                        jsonNewTask,
+                                                        out HttpStatusCode statusCode,
+                                                        out string description));
+
+
+        }
+
+        [TestMethod]
+        public void AddEmptyTaskTest()
+        {
+            var jsonNewTask = @"{}";
+
+            Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+                                                        jsonNewTask,
+                                                        out HttpStatusCode statusCode,
+                                                        out string description));
+        }
+
+        [TestMethod]
+        public void AddExistTaskTest()
+        {
+            testList.Id = Guid.NewGuid();
+            var jsonNewList = testList.SerializeJson();
+
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"lists/new",
+                                                            jsonNewList,
+                                                            out HttpStatusCode statusCode,
+                                                            out string description);
+
+            Assert.AreEqual(201, (int)statusCode);
+
+            testTask.Id = Guid.NewGuid();
+            var jsonNewTask = testTask.SerializeJson();
+
+            TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+                                                        jsonNewTask,
+                                                        out HttpStatusCode statusCode2,
+                                                        out string description2);
+
+            Assert.ThrowsException<WebException>(() => TestHelper.SendPost(TestHelper.REST_SERVICE_START_URL + $"list/{testList.Id}/tasks",
+                                                        jsonNewTask,
+                                                        out HttpStatusCode statusCode1,
+                                                        out string description1));
+            
         }
     }
 }

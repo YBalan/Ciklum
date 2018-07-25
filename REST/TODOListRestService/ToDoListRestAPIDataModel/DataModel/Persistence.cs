@@ -49,9 +49,9 @@ namespace ToDoListRestAPIDataModel.DataModel
         #endregion
 
         #region POST Methods
-        public Status AddNewList(ToDoList list)
+        public Status AddNewList(IToDoListEntity entity)
         {
-            if (list == null || !list.Validate())
+            if (!(entity is ToDoList list) || !list.Validate())
             {
                 return Status.Invalid;
             }
@@ -67,9 +67,9 @@ namespace ToDoListRestAPIDataModel.DataModel
         }
 
 
-        public Status AddNewTask(string listId, ToDoTask task)
+        public Status AddNewTask(string listId, IToDoListEntity entity)
         {
-            if (task == null || string.IsNullOrWhiteSpace(listId) || !task.Validate())
+            if (!(entity is ToDoTask task) || string.IsNullOrWhiteSpace(listId) || !task.Validate())
             {
                 return Status.Invalid;
             }
