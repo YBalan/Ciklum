@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,13 +46,13 @@ namespace ToDoListRestAPIDataModel.DataModel
         public ToDoList GetList(string id)
         {
             return TodoLists.FirstOrDefault(tdl => tdl.Id == ParseGuid(id));
-        }        
+        }
         #endregion
 
         #region POST Methods
-        public Status AddNewList(IToDoListEntity entity)
+        public Status AddNewList(ToDoList list)
         {
-            if (!(entity is ToDoList list) || !list.Validate())
+            if (list == null || !list.Validate())
             {
                 return Status.Invalid;
             }
@@ -67,9 +68,9 @@ namespace ToDoListRestAPIDataModel.DataModel
         }
 
 
-        public Status AddNewTask(string listId, IToDoListEntity entity)
+        public Status AddNewTask(string listId, ToDoTask task)
         {
-            if (!(entity is ToDoTask task) || string.IsNullOrWhiteSpace(listId) || !task.Validate())
+            if (task == null || string.IsNullOrWhiteSpace(listId) || !task.Validate())
             {
                 return Status.Invalid;
             }
@@ -81,7 +82,7 @@ namespace ToDoListRestAPIDataModel.DataModel
                 return Status.NotFound;
             }
 
-            if (list.Tasks.Any(tsk => tsk != null && tsk.Id == task.Id))
+            if (list.ToDoTasks.Any(tsk => tsk != null && tsk.Id == task.Id))
             {
                 return Status.AlreadyExist;
             }
@@ -98,8 +99,8 @@ namespace ToDoListRestAPIDataModel.DataModel
                 return Status.Invalid;
             }
 
-            var task = TodoLists.FirstOrDefault(tdl =>  tdl.Id == ParseGuid(listId))?.
-                       Tasks?.FirstOrDefault(tsk => tsk.Id == ParseGuid(taskId));
+            var task = TodoLists.FirstOrDefault(tdl => tdl.Id == ParseGuid(listId))?.
+                       ToDoTasks?.FirstOrDefault(tsk => tsk.Id == ParseGuid(taskId));
 
             if (task == null)
             {

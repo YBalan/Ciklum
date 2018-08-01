@@ -77,7 +77,7 @@ namespace SystemTests
                 var result = json.DeserializeJson<ToDoList>();
                 Assert.IsNotNull(result);
                 Assert.AreEqual(list.Id, result.Id);
-                Assert.IsTrue(result.Tasks.Any(t => t.Id == task.Id));
+                Assert.IsTrue(result.ToDoTasks.Any(t => t.Id == task.Id), $"Task not aded: {task.Id}");
             });
         }
     }

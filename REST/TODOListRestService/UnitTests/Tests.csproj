@@ -41,6 +41,12 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.3.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -51,6 +57,7 @@
       <HintPath>..\packages\Moq.4.8.3\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -71,7 +78,7 @@
     <Compile Include="SystemTests\PostTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTests\ConcurrencyTest.cs" />
-    <Compile Include="UnitTests\PersistenceTest.cs" />
+    <Compile Include="UnitTests\DBCompatibleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -82,6 +89,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ToDoListDBLayer\ToDoListDBLayer.csproj">
+      <Project>{644d42ac-581a-4236-96d3-6a6353cac7a6}</Project>
+      <Name>ToDoListDBLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToDoListRestAPIDataModel\ToDoListRestAPIDataModel.csproj">
       <Project>{8590f87d-7254-4df2-a8cb-c2ebdb8a61c0}</Project>
       <Name>ToDoListRestAPIDataModel</Name>

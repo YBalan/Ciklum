@@ -9,6 +9,9 @@ namespace ToDoListRestAPIDataModel.DataModel
     [DataContract]
     public sealed class ToDoTask : ToDoListEntityBase
     {
+        public int ToDoTaskId { get; set; }
+        public ToDoList ToDoList { get; set; }
+
         [DataMember(Name = "completed")]
         public bool Completed { get; set; }
     }

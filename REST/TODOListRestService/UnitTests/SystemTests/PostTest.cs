@@ -130,7 +130,7 @@ namespace SystemTests
             var result = json.DeserializeJson<ToDoList>();
             Assert.IsNotNull(result);
             Assert.AreEqual(testList.Id, result.Id);
-            Assert.IsTrue(result.Tasks.Any(t => t.Id == testTask.Id));
+            Assert.IsTrue(result.ToDoTasks.Any(t => t.Id == testTask.Id));
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@ namespace SystemTests
             var result = json.DeserializeJson<ToDoList>();
             Assert.IsNotNull(result);
             Assert.AreEqual(testList.Id, result.Id);
-            Assert.IsTrue(result.Tasks.First(t => t.Id == testTask.Id).Completed);
+            Assert.IsTrue(result.ToDoTasks.First(t => t.Id == testTask.Id).Completed);
         }
 
         [TestMethod]
